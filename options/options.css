@@ -1,0 +1,1546 @@
+/* Options page styles — Tcalm Firefox Extension.
+   v1.1.18: Apple iOS 18 design language (Liquid Glass, inset grouped
+   lists, native-style switches, segmented controls, SF-styled inline
+   SVG glyphs, spring press effects) with full RTL support. Brand
+   accent (indigo #4F46E5) and all functional markup contracts kept. */
+
+/* ---------------------------------------------------------- 1. Tokens */
+
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+  /* v1.1.20: themed scrollbar (Firefox thin scrollbars). */
+  scrollbar-color: #c8c8cd transparent;
+  --bg: #f2f2f7;
+  --card: rgba(255, 255, 255, 0.82);
+  --card-border: rgba(0, 0, 0, 0.06);
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --text: #1c1c1e;
+  --text-2: #8e8e93;
+  /* v1.1.20: dedicated hint color — slightly deeper than the muted icon
+     gray so 13px helper text clears WCAG AA on the card (4.9:1) instead
+     of sitting at 3.9:1. */
+  --hint: #6d6d73;
+  --muted: #8e8e93;
+
+  --accent: #4f46e5;
+  --accent-strong: #4338ca;
+  --accent-contrast: #ffffff;
+  --accent-soft: #e9e7ff;
+  --accent-glow: rgba(79, 70, 229, 0.25);
+
+  --fill: #e5e5ea;
+  --fill-soft: rgba(120, 120, 128, 0.08);
+  --field-bg: rgba(120, 120, 128, 0.06);
+  --hair: rgba(0, 0, 0, 0.09);
+  --divider: rgba(0, 0, 0, 0.07);
+  --nav-hover: rgba(120, 120, 128, 0.1);
+
+  --seg-fill: #e5e5ea;
+  --seg-thumb: #ffffff;
+  --switch-off: rgba(120, 120, 128, 0.32);
+
+  --danger: #d70015;
+  --danger-soft: rgba(255, 59, 48, 0.12);
+  --ok: #248a3d;
+  /* v1.1.22: amber warning pair (permission OFF state) — the text tone
+     clears AA on the tinted card (5.2:1). */
+  --warn: #b45309;
+  --warn-soft: rgba(255, 159, 10, 0.13);
+
+  --console-bg: #f7f7f9;
+  --ambient-1: rgba(79, 70, 229, 0.09);
+  --ambient-2: rgba(0, 199, 190, 0.06);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  scrollbar-color: #3a3a3f transparent;
+  /* v1.1.20: near-solid dark card (no backdrop-filter anymore — see
+     .ios-group) so ambient glow shows only as a whisper, exactly like
+     iOS 18's flat elevated surfaces. */
+  --bg: #09090b;
+  --card: rgba(28, 28, 30, 0.9);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --glass-bg: rgba(18, 18, 20, 0.74);
+  --text: #f5f5f7;
+  --text-2: #98989e;
+  --hint: #a6a6ad;
+  --muted: #98989e;
+
+  --accent: #8b93ff;
+  --accent-strong: #a5abff;
+  --accent-contrast: #101223;
+  --accent-soft: #2a2f4a;
+  --accent-glow: rgba(139, 147, 255, 0.28);
+
+  --fill: #2c2c2e;
+  --fill-soft: rgba(120, 120, 128, 0.18);
+  --field-bg: rgba(120, 120, 128, 0.14);
+  --hair: rgba(255, 255, 255, 0.11);
+  --divider: rgba(255, 255, 255, 0.1);
+  --nav-hover: rgba(120, 120, 128, 0.2);
+
+  --seg-fill: #2c2c2e;
+  --seg-thumb: #636366;
+  --switch-off: rgba(120, 120, 128, 0.4);
+
+  --danger: #ff453a;
+  --danger-soft: rgba(255, 69, 58, 0.18);
+  --ok: #30d158;
+  --warn: #ffb648;
+  --warn-soft: rgba(255, 159, 10, 0.15);
+
+  --console-bg: #111113;
+  --ambient-1: rgba(139, 147, 255, 0.09);
+  --ambient-2: rgba(0, 199, 190, 0.05);
+  /* v1.1.20: the dark theme previously inherited the LIGHT shadow token
+     (near-invisible 6% black) — dark elevation now carries real depth. */
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='system'] {
+    color-scheme: dark;
+    scrollbar-color: #3a3a3f transparent;
+    --bg: #09090b;
+    --card: rgba(28, 28, 30, 0.9);
+    --card-border: rgba(255, 255, 255, 0.12);
+    --glass-bg: rgba(18, 18, 20, 0.74);
+    --text: #f5f5f7;
+    --text-2: #98989e;
+    --hint: #a6a6ad;
+    --muted: #98989e;
+    --accent: #8b93ff;
+    --accent-strong: #a5abff;
+    --accent-contrast: #101223;
+    --accent-soft: #2a2f4a;
+    --accent-glow: rgba(139, 147, 255, 0.28);
+    --fill: #2c2c2e;
+    --fill-soft: rgba(120, 120, 128, 0.18);
+    --field-bg: rgba(120, 120, 128, 0.14);
+    --hair: rgba(255, 255, 255, 0.11);
+    --divider: rgba(255, 255, 255, 0.1);
+    --nav-hover: rgba(120, 120, 128, 0.2);
+    --seg-fill: #2c2c2e;
+    --seg-thumb: #636366;
+    --switch-off: rgba(120, 120, 128, 0.4);
+    --danger: #ff453a;
+    --danger-soft: rgba(255, 69, 58, 0.18);
+    --ok: #30d158;
+    --console-bg: #111113;
+    --ambient-1: rgba(139, 147, 255, 0.09);
+    --ambient-2: rgba(0, 199, 190, 0.05);
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.45);
+  }
+}
+
+/* The controller toggles the [hidden] attribute on live elements
+   (toast, status lines, location boxes). Author display rules must
+   never override it. */
+[hidden] {
+  display: none !important;
+}
+
+/* ---------------------------------------------------------- 2. Base */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  /* SF stack on Apple; Segoe UI Variable/Segoe UI on Windows (incl. its
+     Arabic glyphs); Noto families on Linux; Tahoma as a last
+     Arabic-capable fallback on older Windows. */
+  font:
+    14px/1.5 -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+    'Segoe UI Variable Text', 'Segoe UI', 'Helvetica Neue', 'Noto Sans',
+    'Noto Sans Arabic', Tahoma, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* iOS 18 ambient light — two soft brand-tinted glows above the fold. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(820px 420px at 18% -8%, var(--ambient-1), transparent 65%),
+    radial-gradient(700px 380px at 88% -12%, var(--ambient-2), transparent 60%);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* iOS 18 ambient selection tint. */
+::selection {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+/* iOS 18 Liquid Glass. */
+.ios-glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+}
+
+/* iOS 18 spring press effect. */
+.ios-pressable {
+  transition:
+    transform 0.16s cubic-bezier(0.2, 0.9, 0.4, 1.1),
+    opacity 0.15s;
+}
+
+.ios-pressable:active {
+  transform: scale(0.96);
+  opacity: 0.88;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ---------------------------------------------------------- 3. Top bar */
+
+.ios-app {
+  min-height: 100vh;
+}
+
+.ios-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 22px;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid var(--card-border);
+  box-shadow: var(--shadow-card);
+}
+
+.ios-topbar h1 {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  margin: 0;
+}
+
+/* Official logo artwork — natural aspect, soft shadow. */
+.page-logo {
+  flex: none;
+  filter: drop-shadow(0 1.5px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* ---------------------------------------------------------- 4. Layout */
+
+.ios-layout {
+  display: grid;
+  grid-template-columns: 252px minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 22px 22px 90px;
+}
+
+.ios-sidebar {
+  position: sticky;
+  top: 84px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 7px;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-card);
+  scrollbar-width: thin;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9.5px 12px;
+  border: none;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--text-2);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  cursor: pointer;
+  text-align: start;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    transform 0.16s cubic-bezier(0.2, 0.9, 0.4, 1.1),
+    opacity 0.15s;
+}
+
+.nav-item svg {
+  width: 19px;
+  height: 19px;
+  flex: none;
+}
+
+.nav-item:hover {
+  color: var(--text);
+  background: var(--nav-hover);
+}
+
+.nav-item:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+}
+
+.nav-item.is-active {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.ios-content {
+  min-width: 0;
+}
+
+/* Sections: one visible at a time (sidebar switches). Hidden sections
+   keep live DOM state — the controller reads/writes them as before. */
+.ios-section {
+  display: none;
+}
+
+.ios-section.is-active {
+  display: grid;
+  gap: 16px;
+  animation: section-in 0.32s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+@keyframes section-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ios-section-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  text-wrap: balance;
+  margin: 2px 2px -2px;
+}
+
+/* ---------------------------------------------------------- 5. Groups */
+
+.ios-group {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  /* v1.1.20 performance: backdrop-filter is deliberately NOT set here.
+     The page holds ~30 groups; blurring 28px behind each one forced the
+     compositor to re-render every blurred surface while scrolling. Only
+     the two TRUE Liquid Glass surfaces (sticky topbar + sidebar, .ios-glass)
+     keep the blur — on the near-flat page background the cards are
+     visually identical without it, and scrolling is dramatically cheaper. */
+  overflow: hidden;
+}
+
+.ios-group.box-pad {
+  padding: 16px 18px;
+}
+
+.ios-group-caption {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-2);
+  margin: 0 0 9px;
+}
+
+.ios-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12.5px 16px;
+  min-height: 48px;
+}
+
+/* iOS inset list separators: the hairline starts at the leading edge of
+   the row TEXT (16px padding + 29px icon + 11px gap = 56px), not at the
+   group edge, and flips correctly in RTL via logical offsets. */
+.ios-row + .ios-row::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  inset-inline-start: 56px;
+  inset-inline-end: 0;
+  block-size: 1px;
+  background: var(--divider);
+  pointer-events: none;
+}
+
+.row-main {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.row-icon {
+  flex: none;
+  inline-size: 29px;
+  block-size: 29px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+}
+
+.row-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Icon plate tints (iOS system color family). */
+.t-indigo {
+  background: rgba(79, 70, 229, 0.13);
+  color: #4f46e5;
+}
+
+.t-blue {
+  background: rgba(0, 122, 255, 0.12);
+  color: #007aff;
+}
+
+.t-teal {
+  background: rgba(0, 199, 190, 0.14);
+  color: #0e9e97;
+}
+
+.t-orange {
+  background: rgba(255, 149, 0, 0.14);
+  color: #e07800;
+}
+
+.t-red {
+  background: rgba(255, 59, 48, 0.12);
+  color: #e0352b;
+}
+
+.t-pink {
+  background: rgba(255, 45, 85, 0.12);
+  color: #e02d55;
+}
+
+.t-gray {
+  background: rgba(142, 142, 147, 0.16);
+  color: #7d7d82;
+}
+
+:root[data-theme='dark'] .t-indigo {
+  background: rgba(139, 147, 255, 0.16);
+  color: #a5abff;
+}
+
+:root[data-theme='dark'] .t-blue {
+  background: rgba(10, 132, 255, 0.18);
+  color: #409cff;
+}
+
+:root[data-theme='dark'] .t-teal {
+  background: rgba(64, 208, 199, 0.16);
+  color: #53d8d0;
+}
+
+:root[data-theme='dark'] .t-orange {
+  background: rgba(255, 159, 10, 0.16);
+  color: #ffa53a;
+}
+
+:root[data-theme='dark'] .t-red {
+  background: rgba(255, 69, 58, 0.16);
+  color: #ff6961;
+}
+
+:root[data-theme='dark'] .t-pink {
+  background: rgba(255, 55, 95, 0.16);
+  color: #ff6482;
+}
+
+:root[data-theme='dark'] .t-gray {
+  background: rgba(152, 152, 158, 0.18);
+  color: #a6a6ac;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='system'] .t-indigo {
+    background: rgba(139, 147, 255, 0.16);
+    color: #a5abff;
+  }
+  :root[data-theme='system'] .t-blue {
+    background: rgba(10, 132, 255, 0.18);
+    color: #409cff;
+  }
+  :root[data-theme='system'] .t-teal {
+    background: rgba(64, 208, 199, 0.16);
+    color: #53d8d0;
+  }
+  :root[data-theme='system'] .t-orange {
+    background: rgba(255, 159, 10, 0.16);
+    color: #ffa53a;
+  }
+  :root[data-theme='system'] .t-red {
+    background: rgba(255, 69, 58, 0.16);
+    color: #ff6961;
+  }
+  :root[data-theme='system'] .t-pink {
+    background: rgba(255, 55, 95, 0.16);
+    color: #ff6482;
+  }
+  :root[data-theme='system'] .t-gray {
+    background: rgba(152, 152, 158, 0.18);
+    color: #a6a6ac;
+  }
+}
+
+.row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5px;
+  min-width: 0;
+}
+
+.row-label {
+  /* v1.1.20: 15px/1.45 — the comfortable iOS row size (v1.1.19's 14px/1.35
+     read small on desktop); Arabic documents override the leading below. */
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+.hint {
+  color: var(--hint);
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* i18n fills several hints with '' — collapse them so the row-text flex
+   gap does not stay open for invisible paragraphs. */
+.hint:empty {
+  display: none;
+}
+
+.row-block {
+  flex-wrap: wrap;
+}
+
+/* ---------------------------------------------------------- 6. Controls */
+
+/* --- Select rows (iOS value + chevron) --- */
+.row-value {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: none;
+  max-width: 58%;
+}
+
+.row-value select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: end;
+  /* Logical padding: reserves the 24px chevron clearance on the
+     inline-END side in BOTH LTR and RTL. The old physical
+     `padding: 6px 24px 6px 10px` let the text collide with the chevron
+     in Arabic. */
+  padding: 6px 10px;
+  padding-inline-end: 24px;
+  max-inline-size: 100%;
+  min-inline-size: 56px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.row-chevron {
+  position: absolute;
+  inset-inline-end: 5px;
+  inline-size: 13px;
+  block-size: 13px;
+  color: var(--text-2);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+[dir='rtl'] .row-chevron {
+  transform: scaleX(-1);
+}
+
+/* --- Native iOS toggle switch (50 × 30, 26px thumb) --- */
+.ios-switch {
+  position: relative;
+  display: inline-block;
+  flex: none;
+}
+
+.ios-switch input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.sw-track {
+  display: block;
+  inline-size: 50px;
+  block-size: 30px;
+  border-radius: 999px;
+  background: var(--switch-off);
+  transition: background 0.25s;
+  position: relative;
+}
+
+.sw-thumb {
+  position: absolute;
+  top: 2px;
+  inset-inline-start: 2px;
+  inline-size: 26px;
+  block-size: 26px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.28);
+  transition:
+    inset-inline-start 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1),
+    inline-size 0.18s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+/* iOS thumb "elastic": while held, the knob widens slightly and grows
+   AWAY from its resting edge (end side when off, start side when on),
+   then settles back on release. */
+.ios-switch input:active + .sw-track .sw-thumb {
+  inline-size: 28px;
+}
+
+.ios-switch input:active:checked + .sw-track .sw-thumb {
+  inset-inline-start: 20px;
+  inline-size: 28px;
+}
+
+.ios-switch input:checked + .sw-track {
+  background: var(--accent);
+}
+
+.ios-switch input:checked + .sw-track .sw-thumb {
+  inset-inline-start: 22px;
+}
+
+.ios-switch input:focus-visible + .sw-track {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --- Segmented control (floating sliding indicator) --- */
+.ios-segment {
+  position: relative;
+  display: flex;
+  flex: none;
+  max-inline-size: 58%;
+  padding: 2px;
+  border-radius: 10px;
+  background: var(--seg-fill);
+  /* Faint inner ring — the hairline iOS segments carry in light and
+     dark mode. */
+  box-shadow: inset 0 0 0 0.5px var(--hair);
+}
+
+.seg-option {
+  position: relative;
+  /* CRITICAL: the sliding .seg-thumb is an absolutely-positioned
+     sibling painted AFTER non-positioned content. Without this
+     z-index the white thumb covers the SELECTED option's text —
+     exactly the v1.1.18/v1.1.19 bug where "Automatic (browser
+     geolocation)" rendered invisible. */
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 8px;
+  text-align: center;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-2);
+  cursor: pointer;
+  border-radius: 9px;
+  transition: color 0.2s;
+  /* Long labels ("Automatic (browser geolocation)", the long Arabic
+     location strings) wrap onto a balanced second line instead of being
+     clipped — exactly how UISegmentedControl grows with long titles.
+     Labels are vertically centered against their taller sibling. */
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: break-word;
+  min-inline-size: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.seg-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.seg-option span {
+  display: block;
+  text-wrap: balance;
+}
+
+.seg-option:has(input:checked) {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.seg-option input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-radius: 8px;
+}
+
+.seg-thumb {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  inset-inline-start: 2px;
+  inline-size: calc(50% - 3px);
+  border-radius: 9px;
+  background: var(--seg-thumb);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.12),
+    0 0 0 0.5px rgba(0, 0, 0, 0.04);
+  transition: inset-inline-start 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  pointer-events: none;
+}
+
+.ios-segment:has(.seg-option:nth-of-type(2) input:checked) .seg-thumb {
+  inset-inline-start: calc(50% + 1px);
+}
+
+/* v1.1.22: 3-way segments (the alert-window mode control). Same sliding
+   thumb, generalized to thirds — logical offsets keep RTL mirrored
+   automatically, exactly like the 2-way control. */
+.ios-segment.seg-3 .seg-thumb {
+  inline-size: calc((100% - 4px) / 3 - 1px);
+}
+
+.ios-segment.seg-3:has(.seg-option:nth-of-type(2) input:checked) .seg-thumb {
+  inset-inline-start: calc((100% - 4px) / 3 + 2.5px);
+}
+
+.ios-segment.seg-3:has(.seg-option:nth-of-type(3) input:checked) .seg-thumb {
+  inset-inline-start: calc(2 * ((100% - 4px) / 3) + 2.5px);
+}
+
+/* v1.1.22: pressed-state feedback for segment options (both 2-way and
+   3-way) — the label itself squashes like an iOS pill while the thumb
+   slides. Compositor-only properties (transform/opacity), so presses
+   never trigger layout. */
+.seg-option span {
+  transition:
+    transform 0.16s cubic-bezier(0.2, 0.9, 0.4, 1.1),
+    opacity 0.15s;
+}
+
+.seg-option:active span {
+  transform: scale(0.96);
+  opacity: 0.72;
+}
+
+/* --- Steppers (number fields) --- */
+.ios-stepper {
+  flex: none;
+  inline-size: 92px;
+  text-align: center;
+  border-radius: 12px;
+  background: var(--field-bg);
+  border: 1px solid var(--hair);
+  padding: 8px 6px;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  caret-color: var(--accent);
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.ios-stepper::-webkit-outer-spin-button,
+.ios-stepper::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* --- Text fields + coordinate grid (rounded-xl) --- */
+input[type='text'],
+.grid-2 input {
+  border-radius: 12px;
+  border: 1px solid var(--hair);
+  background: var(--field-bg);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 9px 12px;
+  caret-color: var(--accent);
+}
+
+input[type='text']::placeholder,
+.grid-2 input::placeholder {
+  color: var(--text-2);
+  opacity: 0.7;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 104px 104px;
+  gap: 8px;
+  flex: none;
+}
+
+.grid-2 input {
+  inline-size: 100%;
+  text-align: center;
+  padding: 8px 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.field-inline {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+
+.field-inline input[type='text'] {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+/* ---------------------------------------------------------- 7. Buttons */
+
+button {
+  font-family: inherit;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background 0.18s,
+    box-shadow 0.18s,
+    filter 0.18s,
+    transform 0.16s cubic-bezier(0.2, 0.9, 0.4, 1.1),
+    opacity 0.15s;
+}
+
+.btn:active {
+  transform: scale(0.96);
+  opacity: 0.88;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: 0 6px 20px var(--accent-glow);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.07);
+}
+
+.btn-secondary {
+  background: var(--fill-soft);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--hair);
+}
+
+.btn-secondary:hover {
+  background: var(--nav-hover);
+}
+
+.btn-danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.btn-danger:hover {
+  filter: brightness(1.05);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.button-row {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-block-start: 10px;
+}
+
+.button-row.wrap {
+  margin-block-start: 4px;
+}
+
+/* ---------------------------------------------------------- 8. Chips */
+
+.ios-group.chips-block {
+  padding: 13px 16px 16px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--fill);
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--text);
+  margin: 0;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.16s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+.chip:active {
+  transform: scale(0.96);
+}
+
+.chip:has(input:checked) {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.chip input {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  inline-size: 18px;
+  block-size: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text-2);
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+  transition: background 0.18s, border-color 0.18s;
+}
+
+.chip input:checked {
+  border-color: var(--accent);
+  background:
+    var(--accent)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.5 12.5l4 4L18.5 7.5'/%3E%3C/svg%3E")
+    center / 11px 11px no-repeat;
+}
+
+.chip input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------- 9. Statuses */
+
+.status {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--hint);
+  margin: 8px 0 0;
+}
+
+.status:not(:empty)::before {
+  content: '';
+  display: inline-block;
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  margin-inline-end: 7px;
+  vertical-align: 1.5px;
+  opacity: 0.75;
+}
+
+.status.ok {
+  color: var(--ok);
+}
+
+.status.error {
+  color: var(--danger);
+}
+
+/* status paragraphs placed directly inside a row-style group (coords error) */
+.ios-group:not(.box-pad):not(.chips-block) > .status {
+  margin: 0;
+  padding: 0 16px 12.5px;
+}
+
+/* ------------------------------------------------ 9b. Permission card (v1.1.22)
+   The media "Site access permission" row, promoted to a real status card:
+   denied -> amber warning (the feature cannot work until granted);
+   granted -> green confirmation, grant button retires. Pure state swap on
+   data-state — no class juggling from JS, one attribute write. */
+.perm-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid transparent;
+  transition:
+    background 0.25s,
+    border-color 0.25s;
+}
+
+.perm-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.perm-icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 34px;
+  block-size: 34px;
+  border-radius: 10px;
+  background: var(--fill-soft);
+  color: var(--text-2);
+  transition:
+    background 0.25s,
+    color 0.25s;
+}
+
+.perm-icon svg {
+  inline-size: 20px;
+  block-size: 20px;
+}
+
+.perm-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-inline-size: 0;
+}
+
+.perm-head-text .status {
+  margin: 0;
+}
+
+.perm-card[data-state='denied'] {
+  background: var(--warn-soft);
+  border-color: color-mix(in srgb, var(--warn) 24%, transparent);
+}
+
+.perm-card[data-state='denied'] .perm-icon {
+  background: color-mix(in srgb, var(--warn) 15%, transparent);
+  color: var(--warn);
+}
+
+.perm-card[data-state='denied'] .perm-head-text .status {
+  color: var(--warn);
+}
+
+.perm-card[data-state='granted'] .perm-icon {
+  background: color-mix(in srgb, var(--ok) 14%, transparent);
+  color: var(--ok);
+}
+
+.perm-card[data-state='granted'] .perm-head-text .status {
+  color: var(--ok);
+}
+
+.perm-card[data-state='granted'] #grant-permission {
+  display: none;
+}
+
+.note {
+  color: var(--hint);
+  font-size: 13px;
+  line-height: 1.6;
+  background: var(--fill-soft);
+  border-radius: 12px;
+  padding: 11px 13px;
+  margin: 6px 0 0;
+}
+
+.toast {
+  margin-inline-start: auto;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 600;
+  font-size: 12.5px;
+  box-shadow: 0 4px 16px var(--accent-glow);
+  transition: opacity 0.3s ease;
+  animation: toast-in 0.28s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------- 10. Site list */
+
+.site-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.site-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 7px;
+  /* Logical: the 12px inset follows the reading direction (the label
+     edge), keeping the remove-button edge tight in RTL too. */
+  padding-inline-start: 12px;
+  border-radius: 999px;
+  background: var(--fill);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.site-list li button {
+  padding: 3px 9px;
+  border: none;
+  background: var(--accent-soft);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--accent-strong);
+  cursor: pointer;
+  margin: 0;
+}
+
+.site-list li button:hover {
+  filter: brightness(0.96);
+}
+
+/* ---------------------------------------------------------- 11. Diagnostics */
+
+.diag-list {
+  list-style: none;
+  padding: 10px 12px;
+  margin: 10px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--console-bg);
+  border: 1px solid var(--hair);
+  border-radius: 12px;
+  scrollbar-width: thin;
+}
+
+.diag-list:empty {
+  display: none;
+}
+
+.diag-list li {
+  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--text);
+  word-break: break-all;
+  direction: ltr;
+  text-align: left;
+}
+
+.diag-list li.error {
+  color: var(--danger);
+}
+
+/* v1.1.21: retention summary line above the entries (not an event). */
+.diag-list li.diag-summary {
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--hair);
+  padding-bottom: 6px;
+  margin-bottom: 3px;
+}
+
+/* v1.1.21: one week of entries can be long — a taller, calmer console. */
+.diag-list {
+  max-height: 320px;
+}
+
+/* ---------------------------------------------------------- 12. About */
+
+.about-card {
+  text-align: start;
+}
+
+.about-head {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-block-end: 6px;
+}
+
+.about-logo {
+  flex: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.22));
+}
+
+.about-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.about-name {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+.about-card p {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.about-link-row {
+  margin: 2px 0 0;
+}
+
+.about-card a {
+  color: var(--accent-strong);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.about-card a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.about-card a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.version-badge {
+  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-2);
+  background: var(--fill);
+  border: 1px solid var(--hair);
+  border-radius: 999px;
+  padding: 2.5px 10px;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------- 13. Boot warning */
+
+.boot-warning {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 14px auto 0;
+  max-width: 1036px;
+  padding: 14px 16px;
+  border: 1px solid rgba(199, 152, 9, 0.4);
+  border-radius: 16px;
+  background: #fff9e3;
+  color: #6b4e00;
+  font-size: 13.5px;
+  line-height: 1.6;
+  box-shadow: var(--shadow-card);
+}
+
+:root[data-theme='dark'] .boot-warning {
+  background: rgba(255, 204, 0, 0.1);
+  color: #ffd970;
+  border-color: rgba(255, 204, 0, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='system'] .boot-warning {
+    background: rgba(255, 204, 0, 0.1);
+    color: #ffd970;
+    border-color: rgba(255, 204, 0, 0.25);
+  }
+}
+
+.boot-warning[hidden] {
+  display: none;
+}
+
+.boot-warning code {
+  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  background: rgba(127, 96, 0, 0.14);
+  padding: 1px 5px;
+  border-radius: 5px;
+}
+
+.boot-error-detail {
+  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  direction: ltr;
+  text-align: left;
+  word-break: break-all;
+}
+
+/* ---------------------------------------------------------- 14. Responsive */
+
+@media (max-width: 920px) {
+  .ios-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    padding: 14px 14px 70px;
+  }
+
+  /* Sidebar becomes a sticky horizontal pill scroller. */
+  .ios-sidebar {
+    position: sticky;
+    top: 60px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 5px;
+    border-radius: 14px;
+    scrollbar-width: none;
+  }
+
+  .ios-sidebar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-item {
+    width: auto;
+    flex: none;
+    padding: 8px 13px;
+    white-space: nowrap;
+  }
+
+  .ios-section-title {
+    font-size: 17px;
+  }
+
+  .ios-topbar {
+    padding: 11px 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ios-row {
+    flex-wrap: wrap;
+  }
+
+  .row-value,
+  .ios-segment {
+    flex: 1 1 100%;
+    max-inline-size: 100%;
+  }
+
+  .ios-segment .seg-option {
+    padding: 9px 10px;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+    flex: 1 1 100%;
+  }
+
+  .ios-group.box-pad {
+    padding: 14px;
+  }
+}
+
+/* ------------------------------------------------ 15. Arabic typography */
+/*
+ * v1.1.20 — Arabic readability overhaul. Three real problems, three fixes:
+ *
+ * 1) FONT ORDER: a Latin-first stack makes Arabic fall through 4-5 fonts
+ *    before an Arabic-capable one is reached. Arabic documents now use a
+ *    dedicated stack: -apple-system (macOS auto-selects its native Arabic
+ *    UI font per script), then 'SF Arabic', then 'Segoe UI' (Windows —
+ *    renders Arabic AND Latin identically, so digits inside Arabic text
+ *    keep the same rhythm), then Noto Sans Arabic (Linux), Geeza Pro and
+ *    Tahoma as deep fallbacks.
+ *
+ * 2) OPTICAL SIZE: Arabic script carries a smaller apparent x-height at
+ *    the same px size; 14px Latin ≈ 15px Arabic for equal comfort. Every
+ *    text role gets the Arabic bump, with generous leading (Naskh needs
+ *    room for ascenders/descenders and vowel marks).
+ *
+ * 3) BIDI NUMBERS: coordinate / number inputs keep LTR direction so
+ *    signed values and decimals never scramble inside an RTL document.
+ *
+ * Arabic joins its letters: ANY letter-spacing (negative title tracking
+ * or the positive caption tracking) visually breaks the joins, so every
+ * tracked rule above is reset for Arabic documents. options.js sets
+ * <html lang> and <html dir> together, so both selectors below always
+ * agree. */
+
+:lang(ar),
+:lang(ar) *,
+[dir='rtl'] .ios-topbar h1,
+[dir='rtl'] .ios-section-title,
+[dir='rtl'] .about-name,
+[dir='rtl'] .ios-group-caption {
+  letter-spacing: 0;
+}
+
+:lang(ar) body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Arabic', 'Segoe UI',
+    'Noto Sans Arabic', 'Noto Sans', 'Geeza Pro', Tahoma, sans-serif;
+  line-height: 1.7;
+}
+
+/* Role-by-role Arabic comfort sizes + leading. */
+:lang(ar) .row-label,
+[dir='rtl'] .row-label {
+  font-size: 15.5px;
+  line-height: 1.6;
+}
+
+:lang(ar) .hint,
+:lang(ar) .status,
+:lang(ar) .note,
+[dir='rtl'] .hint,
+[dir='rtl'] .status,
+[dir='rtl'] .note {
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+
+:lang(ar) .row-value select,
+[dir='rtl'] .row-value select {
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+:lang(ar) .seg-option,
+[dir='rtl'] .seg-option {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+:lang(ar) .nav-item,
+[dir='rtl'] .nav-item {
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+:lang(ar) .btn,
+[dir='rtl'] .btn {
+  font-size: 14.5px;
+}
+
+:lang(ar) .chip,
+[dir='rtl'] .chip {
+  font-size: 14px;
+}
+
+:lang(ar) input[type='text'],
+:lang(ar) .ios-stepper,
+[dir='rtl'] input[type='text'],
+[dir='rtl'] .ios-stepper {
+  font-size: 14.5px;
+}
+
+:lang(ar) .about-card p,
+[dir='rtl'] .about-card p {
+  font-size: 13.5px;
+  line-height: 1.85;
+}
+
+:lang(ar) .ios-section-title,
+[dir='rtl'] .ios-section-title {
+  font-size: 23px;
+}
+
+/* Bidi: numbers never flip. Signed coordinates ("30.12", "-95.5") and
+   tabular steppers stay LTR inside the RTL page; text-align keeps the
+   visual centering from the base rules. */
+.grid-2 input,
+.ios-stepper {
+  direction: ltr;
+}

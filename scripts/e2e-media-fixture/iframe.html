@@ -1,0 +1,43 @@
+<!doctype html>
+<!-- Tcalm E2E media fixture — the cross-origin iframe page (127.0.0.1:8138).
+
+     Started via postMessage from the parent page; the background's
+     allFrames injection must reach this frame and pause its audio.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>cross-origin iframe</title>
+<style>
+  body { font: 12px/1.4 monospace; margin: 0; background: #222; color: #ddd; }
+</style>
+</head>
+<body>
+<p>iframe audio: <span id="s">idle</span> <button id="start" type="button">Start</button></p>
+<audio id="iframe-audio" src="chime.ogg" loop></audio>
+<script>
+  const audio = document.getElementById('iframe-audio');
+  function report() {
+    return JSON.stringify({
+      iframe: !audio.paused,
+      hook: typeof window.__tcalmMedia === 'object' && window.__tcalmMedia !== null,
+    });
+  }
+  window.__report = report;
+  window.setInterval(() => {
+    document.getElementById('s').textContent = audio.paused ? 'paused' : 'PLAYING';
+  }, 250);
+  // Selenium clicks the button INSIDE this frame — a trusted gesture with
+  // user activation local to this document, which the cross-origin
+  // postMessage from the parent cannot provide.
+  document.getElementById('start').addEventListener('click', async () => {
+    await audio.play().catch(() => {});
+  });
+  window.addEventListener('message', async (event) => {
+    if (event.data === 'start') {
+      await audio.play().catch(() => {});
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="system">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tcalm</title>
+    <!-- v1.1.20: window/taskbar identity for the alert window. -->
+    <link rel="icon" type="image/png" sizes="48x48" href="../icons/icon-48.png" />
+    <link rel="stylesheet" href="toast.css" />
+  </head>
+  <!--
+    NOTE: no id on <body> — it would collide with the inner #toast-body
+    div (getElementById returns the first match in document order, and a
+    textContent assignment on <body> would wipe the whole page).
+  -->
+  <body class="toast" role="alertdialog" aria-live="assertive" aria-labelledby="toast-title">
+    <img src="../logo/logo.png" alt="" class="toast-logo" width="46" height="32" />
+
+    <div class="toast-main">
+      <div class="toast-title" id="toast-title">Tcalm</div>
+      <div class="toast-time" id="toast-time" hidden></div>
+      <div class="toast-body" id="toast-body"></div>
+    </div>
+
+    <button type="button" class="toast-close" id="toast-close" title="Close">×</button>
+
+    <!-- Countdown: shrinks to zero over the auto-close delay. -->
+    <div class="toast-progress" aria-hidden="true"><div class="toast-progress-bar" id="toast-bar"></div></div>
+
+    <script src="toast.js"></script>
+  </body>
+</html>

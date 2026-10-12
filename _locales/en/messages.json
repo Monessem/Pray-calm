@@ -1,0 +1,638 @@
+{
+  "name": {
+    "message": "Tcalm — Prayer Times & Media Pause"
+  },
+  "description": {
+    "message": "Islamic prayer times with notifications and automatic media pause in Firefox tabs. Offline, private, English & العربية."
+  },
+  "actionTitle": {
+    "message": "Tcalm — prayer times"
+  },
+  "commandOpenPopup": {
+    "message": "Open the Tcalm popup"
+  },
+  "prayer_fajr": {
+    "message": "Fajr"
+  },
+  "prayer_dhuhr": {
+    "message": "Dhuhr"
+  },
+  "prayer_asr": {
+    "message": "Asr"
+  },
+  "prayer_maghrib": {
+    "message": "Maghrib"
+  },
+  "prayer_isha": {
+    "message": "Isha"
+  },
+  "prayer_sunrise": {
+    "message": "Sunrise"
+  },
+  "prayer_sunset": {
+    "message": "Sunset"
+  },
+  "method_1": {
+    "message": "University of Islamic Sciences, Karachi"
+  },
+  "method_2": {
+    "message": "Islamic Society of North America (ISNA)"
+  },
+  "method_3": {
+    "message": "Muslim World League (MWL)"
+  },
+  "method_4": {
+    "message": "Umm Al-Qura University, Makkah"
+  },
+  "method_5": {
+    "message": "Egyptian General Authority of Survey"
+  },
+  "method_7": {
+    "message": "Institute of Geophysics, University of Tehran"
+  },
+  "method_8": {
+    "message": "Gulf Region"
+  },
+  "method_9": {
+    "message": "Kuwait"
+  },
+  "method_10": {
+    "message": "Qatar"
+  },
+  "method_11": {
+    "message": "Majlis Ugama Islam Singapura"
+  },
+  "method_12": {
+    "message": "Union des Organisations Islamiques de France"
+  },
+  "method_13": {
+    "message": "Diyanet İşleri Başkanlığı, Turkey"
+  },
+  "method_14": {
+    "message": "Spiritual Administration of Muslims of Russia"
+  },
+  "method_15": {
+    "message": "Moonsighting Committee Worldwide"
+  },
+  "popup_nextPrayer": {
+    "message": "Next Prayer"
+  },
+  "popup_nextPrayerNone": {
+    "message": "No computable prayer time for this location"
+  },
+  "popup_todayPrayers": {
+    "message": "Today’s Prayers"
+  },
+  "popup_statusPassed": {
+    "message": "Passed"
+  },
+  "popup_statusNext": {
+    "message": "Next"
+  },
+  "popup_enabledLabel": {
+    "message": "Active"
+  },
+  "popup_disabledLabel": {
+    "message": "Paused"
+  },
+  "popup_openOptions": {
+    "message": "Open settings"
+  },
+  "popup_toggleExtension": {
+    "message": "Enable or pause Tcalm"
+  },
+  "popup_locationFallback": {
+    "message": "Location not set"
+  },
+  "notify_title": {
+    "message": "It is now time for {prayer} prayer"
+  },
+  "notify_body_media": {
+    "message": "{time} — media in Firefox tabs has been paused (Tcalm)"
+  },
+  "notify_body_plain": {
+    "message": "{time} — Tcalm prayer time reminder"
+  },
+  "notify_pre_title": {
+    "message": "{prayer} in {minutes} minutes"
+  },
+  "notify_pre_body": {
+    "message": "Prayer time: {time}."
+  },
+  "badge_nextTitle": {
+    "message": "Tcalm — next prayer: {prayer} at {time}"
+  },
+  "notify_testTitle": {
+    "message": "Tcalm notification test"
+  },
+  "notify_testBody": {
+    "message": "If you can read this, the notification was displayed."
+  },
+  "options_notifyTesting": {
+    "message": "Sending the test notification…"
+  },
+  "options_notifyTestOk": {
+    "message": "The notification appeared on screen — prayer notifications are working."
+  },
+  "options_notifyTestSuppressed": {
+    "message": "The notification was created but the system did not display it. Allow Firefox to show notifications in your OS notification settings, turn off Focus Assist / Do Not Disturb, then try again."
+  },
+  "options_notifyTestUnknown": {
+    "message": "The notification was created. This browser cannot confirm on-screen display — watch for it now."
+  },
+  "options_notifyTestFail": {
+    "message": "Failed to create the notification: {error}"
+  },
+  "options_notifyOsHint": {
+    "message": "The notification permission is required by this extension (granted automatically at install — it is not optional). If notifications still never appear despite a passing test: make sure your OS lets Firefox show notifications, Do-Not-Disturb is off, and Firefox-level notification settings allow them."
+  },
+  "toast_close": {
+    "message": "Close"
+  },
+  "options_alertWindowMode": {
+    "message": "On-screen alert window"
+  },
+  "options_alertWindowMode_always": {
+    "message": "Always"
+  },
+  "options_alertWindowMode_auto": {
+    "message": "Fallback"
+  },
+  "options_alertWindowMode_never": {
+    "message": "Never"
+  },
+  "options_alertWindowModeHint": {
+    "message": "A Tcalm window no OS setting can block — Fallback shows it only when the banner fails. Default: Never."
+  },
+  "options_alertWindowSeconds": {
+    "message": "Alert window duration (seconds)"
+  },
+  "options_alertWindowSecondsHint": {
+    "message": "The window closes itself after this delay; click it, press the × button, or hit Esc to close it immediately."
+  },
+  "options_toastTestOpened": {
+    "message": "The on-screen alert window opened — you should see it right now. This is the fallback channel that cannot fail."
+  },
+  "options_toastTestDisabled": {
+    "message": "The alert window is disabled in settings (mode: never)."
+  },
+  "options_toastTestFailed": {
+    "message": "The alert window could not be opened — send this log with your report."
+  },
+  "options_title": {
+    "message": "Tcalm Settings"
+  },
+  "options_sectionGeneral": {
+    "message": "General"
+  },
+  "options_language": {
+    "message": "Language"
+  },
+  "options_language_auto": {
+    "message": "Follow Firefox"
+  },
+  "options_theme": {
+    "message": "Appearance"
+  },
+  "options_theme_light": {
+    "message": "Light"
+  },
+  "options_theme_dark": {
+    "message": "Dark"
+  },
+  "options_theme_system": {
+    "message": "Match system"
+  },
+  "options_timeFormat": {
+    "message": "Time format"
+  },
+  "options_timeFormat_12": {
+    "message": "12-hour (AM / PM)"
+  },
+  "options_timeFormat_24": {
+    "message": "24-hour"
+  },
+  "options_timeFormatHint": {
+    "message": "Shown in the popup and in notifications (12-hour is the default)."
+  },
+  "options_sectionLocation": {
+    "message": "Location"
+  },
+  "options_locationMode": {
+    "message": "Location source"
+  },
+  "options_location_auto": {
+    "message": "Automatic (browser geolocation)"
+  },
+  "options_location_manual": {
+    "message": "Manual"
+  },
+  "options_location_autoHint": {
+    "message": "Automatic mode asks Firefox for your position only when you press the button. Your coordinates never leave the extension except for the optional IP lookup below."
+  },
+  "options_gpsButton": {
+    "message": "Detect my location"
+  },
+  "options_gpsWorking": {
+    "message": "Waiting for permission…"
+  },
+  "options_gpsSuccess": {
+    "message": "Location detected: {place}"
+  },
+  "options_gpsDenied": {
+    "message": "Permission denied — enable location for this site in Firefox settings."
+  },
+  "options_gpsFailed": {
+    "message": "Could not determine your location."
+  },
+  "options_ipButton": {
+    "message": "Approximate location via IP"
+  },
+  "options_ipHint": {
+    "message": "Optional: sends your IP address to the public service ipwho.is to estimate city and timezone. Nothing is sent otherwise."
+  },
+  "options_ipSuccess": {
+    "message": "Approximate location found: {place}"
+  },
+  "options_ipFailed": {
+    "message": "IP lookup failed or was not authorized."
+  },
+  "options_country": {
+    "message": "Country"
+  },
+  "options_city": {
+    "message": "City"
+  },
+  "options_worldHint": {
+    "message": "Choose from {countries} countries and {cities} cities worldwide — coordinates and timezone fill in automatically as you pick."
+  },
+  "options_latitude": {
+    "message": "Latitude"
+  },
+  "options_longitude": {
+    "message": "Longitude"
+  },
+  "options_timezone": {
+    "message": "Timezone"
+  },
+  "options_timezone_auto": {
+    "message": "Follow system timezone"
+  },
+  "options_coordsHint": {
+    "message": "Coordinates drive the calculation; city and country are labels only."
+  },
+  "options_invalidCoords": {
+    "message": "Latitude must be -90…90 and longitude -180…180."
+  },
+  "options_sectionCalculation": {
+    "message": "Prayer calculation"
+  },
+  "options_method": {
+    "message": "Calculation method"
+  },
+  "options_methodHint": {
+    "message": "Default is the Egyptian General Authority of Survey, as in Tcalm."
+  },
+  "options_asr": {
+    "message": "Asr method"
+  },
+  "options_asr_standard": {
+    "message": "Standard — shadow factor 1 (Shafiʿi, Mālikī, Ḥanbalī)"
+  },
+  "options_asr_hanafi": {
+    "message": "Ḥanafī — shadow factor 2"
+  },
+  "options_highLat": {
+    "message": "High latitude rule"
+  },
+  "options_highLat_night-middle": {
+    "message": "Middle of the night"
+  },
+  "options_highLat_angle-based": {
+    "message": "Angle-based"
+  },
+  "options_highLat_one-seventh": {
+    "message": "One seventh of the night"
+  },
+  "options_highLat_unresolved": {
+    "message": "No adjustment (may be unavailable at extreme latitudes)"
+  },
+  "options_highLatHint": {
+    "message": "Applies near polar latitudes where the sun does not reach the Fajr/Isha angles."
+  },
+  "options_hijriOffset": {
+    "message": "Hijri date adjustment (days)"
+  },
+  "options_hijriHint": {
+    "message": "Shifts the Hijri date shown in the popup if your local calendar differs."
+  },
+  "options_sectionNotifications": {
+    "message": "Notifications"
+  },
+  "options_notifications": {
+    "message": "Prayer notifications"
+  },
+  "options_minutesBefore": {
+    "message": "Advance notice (minutes before prayer)"
+  },
+  "options_minutesBeforeHint": {
+    "message": "0 = notify at prayer time only (Tcalm behavior)."
+  },
+  "options_sound": {
+    "message": "Play a short chime"
+  },
+  "options_soundHint": {
+    "message": "Where Firefox allows audio from the background page."
+  },
+  "options_perPrayer": {
+    "message": "Prayers to notify"
+  },
+  "options_testNotification": {
+    "message": "Send a test notification"
+  },
+  "options_sectionMedia": {
+    "message": "Media pause"
+  },
+  "options_media": {
+    "message": "Pause media at prayer time"
+  },
+  "options_mediaScope": {
+    "message": "Scope"
+  },
+  "options_mediaScope_all": {
+    "message": "All Firefox tabs"
+  },
+  "options_mediaScope_allowlist": {
+    "message": "Only allowed sites"
+  },
+  "options_mediaSites": {
+    "message": "Allowed sites"
+  },
+  "options_mediaSitesHint": {
+    "message": "Host names like youtube.com or music.youtube.com. Applies only in allowlist mode."
+  },
+  "options_mediaAddSite": {
+    "message": "Add site"
+  },
+  "options_mediaRemoveSite": {
+    "message": "Remove"
+  },
+  "options_mediaInvalidSite": {
+    "message": "Enter a plain host name such as “youtube.com”."
+  },
+  "options_mediaDuration": {
+    "message": "Pause duration (minutes)"
+  },
+  "options_mediaDurationHint": {
+    "message": "0 = media stays paused until you press play again yourself (Tcalm default). Above 0: media stays paused for the duration, then Tcalm resumes only what it paused itself."
+  },
+  "options_mediaPermission": {
+    "message": "Site access permission"
+  },
+  "options_mediaGrant": {
+    "message": "Grant access to all sites"
+  },
+  "options_mediaGranted": {
+    "message": "Granted — Tcalm can pause media in Firefox tabs."
+  },
+  "options_mediaNotGranted": {
+    "message": "Not granted — Tcalm cannot pause media until you grant site access. You can revoke it anytime in Firefox Add-ons settings."
+  },
+  "options_mediaPermissionMissing": {
+    "message": "⚠ Media pause needs the site access permission first — grant it below, then test again."
+  },
+  "options_openSetup": {
+    "message": "Permission setup"
+  },
+  "options_mediaLimitation": {
+    "message": "Note: a Firefox extension can pause media playing inside Firefox tabs — including custom players that keep their element off-page (SoundCloud) and Web Audio sites. It cannot pause desktop apps like Spotify or VLC — that requires Tcalm’s desktop daemon."
+  },
+  "options_testMedia": {
+    "message": "Test media pause"
+  },
+  "options_resumeMedia": {
+    "message": "Resume paused media"
+  },
+  "options_mediaResumeNote": {
+    "message": "Resume restores the media paused by the most recent pause event — older paused tabs stay paused until you play them yourself. Pausing targets only tabs that are playing sound (or are on screen), so a large tab count no longer slows it down."
+  },
+  "options_mediaPlatforms": {
+    "message": "Pauses any site playing media in a Firefox tab — YouTube, Netflix, Spotify, Apple Music, Anghami, Deezer, Shahid, SoundCloud and every other player, including custom ones that keep their audio element off-page. During a hold (duration > 0), restarted players are re-paused within seconds."
+  },
+  "options_testNoMedia": {
+    "message": "No playing media found — {candidates} tab(s) with sound or on-screen activity checked, {unreachable} not reachable. Open a tab with audio or video playing, then try again."
+  },
+  "options_testResistant": {
+    "message": "Media on {hosts} resisted pausing — reload that tab once, then test again."
+  },
+  "options_testWebAudio": {
+    "message": " +{count} web audio"
+  },
+  "options_testSinglePause": {
+    "message": "stays paused until you press play"
+  },
+  "options_testAutoResume": {
+    "message": "auto-resumes at {time}"
+  },
+  "options_mediaResumed": {
+    "message": "Resumed {count} item(s) from the last pause."
+  },
+  "options_mediaNothingToResume": {
+    "message": "The last pause left nothing waiting to resume."
+  },
+  "options_mediaNoResponse": {
+    "message": "Background script did not respond — please reload this page."
+  },
+  "onboarding_title": {
+    "message": "Welcome to Tcalm"
+  },
+  "onboarding_tagline": {
+    "message": "Calm prayer times, right inside Firefox"
+  },
+  "onboarding_intro": {
+    "message": "Tcalm shows prayer times, notifies you at prayer time, and can automatically pause playing media in your Firefox tabs. Everything is computed locally — your data never leaves your device."
+  },
+  "onboarding_step1": {
+    "message": "Welcome"
+  },
+  "onboarding_step2": {
+    "message": "Location"
+  },
+  "onboarding_step3": {
+    "message": "Permissions"
+  },
+  "onboarding_continue": {
+    "message": "Continue"
+  },
+  "onboarding_back": {
+    "message": "Back"
+  },
+  "onboarding_featTitle": {
+    "message": "What Tcalm does"
+  },
+  "onboarding_featTimes": {
+    "message": "Prayer times & notifications"
+  },
+  "onboarding_featTimesNote": {
+    "message": "Five daily prayer times computed on your device, with a banner and a sound at prayer time."
+  },
+  "onboarding_featMedia": {
+    "message": "Media pause at prayer time"
+  },
+  "onboarding_featMediaNote": {
+    "message": "Audio and video playing in your Firefox tabs goes quiet for the prayer — and comes back afterwards."
+  },
+  "onboarding_featPrivacy": {
+    "message": "Private & offline"
+  },
+  "onboarding_featPrivacyNote": {
+    "message": "No accounts, no tracking, no data collection. Times are computed locally, always."
+  },
+  "onboarding_platformsTitle": {
+    "message": "Works where you watch & listen"
+  },
+  "onboarding_platformsNote": {
+    "message": "…and any other site that plays audio or video in a Firefox tab."
+  },
+  "onboarding_locationTitle": {
+    "message": "Where should prayer times be calculated?"
+  },
+  "onboarding_locationNote": {
+    "message": "The calculation method follows your country’s convention. You can change all of this anytime in settings."
+  },
+  "onboarding_countryLabel": {
+    "message": "Country"
+  },
+  "onboarding_cityLabel": {
+    "message": "City"
+  },
+  "onboarding_locationSaved": {
+    "message": "Location saved — times will update in a moment."
+  },
+  "onboarding_permsTitle": {
+    "message": "Permissions"
+  },
+  "onboarding_permsIntro": {
+    "message": "These settings can be changed anytime from the Tcalm settings page."
+  },
+  "onboarding_permCore": {
+    "message": "Prayer times & notifications"
+  },
+  "onboarding_permCoreNote": {
+    "message": "Required — granted automatically at install."
+  },
+  "onboarding_permMedia": {
+    "message": "Pause media at prayer time"
+  },
+  "onboarding_permMediaNote": {
+    "message": "Optional — lets Tcalm pause video/audio playing in Firefox tabs. Needs access to all sites."
+  },
+  "onboarding_permIp": {
+    "message": "Location via IP"
+  },
+  "onboarding_permIpNote": {
+    "message": "Optional — one request to ipwho.is to estimate your city when you press the button. Nothing is sent otherwise."
+  },
+  "onboarding_grantBtn": {
+    "message": "Enable all permissions"
+  },
+  "onboarding_grantWorking": {
+    "message": "Waiting for Firefox…"
+  },
+  "onboarding_grantedTitle": {
+    "message": "All permissions enabled"
+  },
+  "onboarding_grantedNote": {
+    "message": "Media pause and IP location are ready. You can turn each feature on or off in settings."
+  },
+  "onboarding_openSettings": {
+    "message": "Open settings"
+  },
+  "onboarding_done": {
+    "message": "Done"
+  },
+  "onboarding_privacy": {
+    "message": "Private by design: no accounts, no tracking, no data collection. See Firefox’s permission description for the exact scope."
+  },
+  "onboarding_revokedNote": {
+    "message": "Permissions were revoked — press the button to enable them again."
+  },
+  "options_sectionDiagnostics": {
+    "message": "Diagnostics"
+  },
+  "diag_hint": {
+    "message": "Recent internal events, kept only on this device and auto-deleted after 7 days, so the log can never affect storage size or performance. If anything misbehaves, press “Copy for support” and send the log with your report."
+  },
+  "diag_empty": {
+    "message": "No events recorded — Tcalm has not reported any errors."
+  },
+  "diag_summary": {
+    "message": "Showing {shown} of {total} events — auto-deleted after 7 days"
+  },
+  "diag_copy": {
+    "message": "Copy for support"
+  },
+  "diag_clear": {
+    "message": "Clear log"
+  },
+  "diag_copied": {
+    "message": "Diagnostics copied to clipboard."
+  },
+  "options_sectionAdvanced": {
+    "message": "Advanced"
+  },
+  "options_recalculate": {
+    "message": "Recalculate now"
+  },
+  "options_clearCache": {
+    "message": "Clear cached data"
+  },
+  "options_export": {
+    "message": "Export settings"
+  },
+  "options_import": {
+    "message": "Import settings"
+  },
+  "options_reset": {
+    "message": "Reset to defaults"
+  },
+  "options_resetConfirm": {
+    "message": "Reset all settings to their defaults?"
+  },
+  "options_saved": {
+    "message": "Saved"
+  },
+  "options_importInvalid": {
+    "message": "The selected file is not a valid Tcalm settings export."
+  },
+  "options_importSuccess": {
+    "message": "Settings imported and applied."
+  },
+  "options_recalculated": {
+    "message": "Schedule recalculated."
+  },
+  "options_cacheCleared": {
+    "message": "Cached data cleared."
+  },
+  "options_resetDone": {
+    "message": "Settings restored to defaults."
+  },
+  "options_sectionAbout": {
+    "message": "About"
+  },
+  "about_intro": {
+    "message": "This browser extension is inspired by and builds on the idea of Tcalm, an open-source desktop project: calm, offline prayer-time reminders with automatic media pause."
+  },
+  "about_credit": {
+    "message": "Many thanks to the author of the original Tcalm project for the wonderful idea."
+  },
+  "about_link_label": {
+    "message": "Original project on GitHub"
+  },
+  "about_author": {
+    "message": "Browser version developed by Mohamed Naseem."
+  },
+  "status_calculating": {
+    "message": "Calculating prayer times…"
+  }
+}

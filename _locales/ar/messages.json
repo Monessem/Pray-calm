@@ -1,0 +1,638 @@
+{
+  "name": {
+    "message": "Tcalm — مواقيت الصلاة وإيقاف الوسائط"
+  },
+  "description": {
+    "message": "مواقيت الصلاة مع إشعارات وإيقاف تلقائي للوسائط في تبويبات فايرفوكس. يعمل دون اتصال ويحترم الخصوصية، بالعربية والإنجليزية."
+  },
+  "actionTitle": {
+    "message": "Tcalm — مواقيت الصلاة"
+  },
+  "commandOpenPopup": {
+    "message": "فتح نافذة Tcalm المنبثقة"
+  },
+  "prayer_fajr": {
+    "message": "الفجر"
+  },
+  "prayer_dhuhr": {
+    "message": "الظهر"
+  },
+  "prayer_asr": {
+    "message": "العصر"
+  },
+  "prayer_maghrib": {
+    "message": "المغرب"
+  },
+  "prayer_isha": {
+    "message": "العشاء"
+  },
+  "prayer_sunrise": {
+    "message": "الشروق"
+  },
+  "prayer_sunset": {
+    "message": "الغروب"
+  },
+  "method_1": {
+    "message": "جامعة العلوم الإسلامية، كراتشي"
+  },
+  "method_2": {
+    "message": "الجمعية الإسلامية لأمريكا الشمالية (ISNA)"
+  },
+  "method_3": {
+    "message": "رابطة العالم الإسلامي"
+  },
+  "method_4": {
+    "message": "جامعة أم القرى، مكة المكرمة"
+  },
+  "method_5": {
+    "message": "الهيئة المصرية العامة للمساحة"
+  },
+  "method_7": {
+    "message": "معهد الجيوفيزياء، جامعة طهران"
+  },
+  "method_8": {
+    "message": "منطقة الخليج العربي"
+  },
+  "method_9": {
+    "message": "دولة الكويت"
+  },
+  "method_10": {
+    "message": "دولة قطر"
+  },
+  "method_11": {
+    "message": "مجلس الشؤون الإسلامية، سنغافورة"
+  },
+  "method_12": {
+    "message": "اتحاد المنظمات الإسلامية بفرنسا"
+  },
+  "method_13": {
+    "message": "رئاسة الشؤون الدينية، تركيا"
+  },
+  "method_14": {
+    "message": "الإدارة الدينية لمسلمي روسيا"
+  },
+  "method_15": {
+    "message": "لجنة رؤية الهلال العالمية"
+  },
+  "popup_nextPrayer": {
+    "message": "الأذان القادم"
+  },
+  "popup_nextPrayerNone": {
+    "message": "لا يمكن حساب مواقيت الصلاة لهذا الموقع"
+  },
+  "popup_todayPrayers": {
+    "message": "صلوات اليوم"
+  },
+  "popup_statusPassed": {
+    "message": "انتهت"
+  },
+  "popup_statusNext": {
+    "message": "التالية"
+  },
+  "popup_enabledLabel": {
+    "message": "يعمل"
+  },
+  "popup_disabledLabel": {
+    "message": "متوقف مؤقتاً"
+  },
+  "popup_openOptions": {
+    "message": "فتح الإعدادات"
+  },
+  "popup_toggleExtension": {
+    "message": "تشغيل أو إيقاف Tcalm مؤقتاً"
+  },
+  "popup_locationFallback": {
+    "message": "لم يتم تحديد الموقع"
+  },
+  "notify_title": {
+    "message": "حان الآن موعد أذان {prayer}"
+  },
+  "notify_body_media": {
+    "message": "{time} — تم إيقاف الوسائط مؤقتاً في تبويبات فايرفوكس (Tcalm)"
+  },
+  "notify_body_plain": {
+    "message": "{time} — تذكير بموعد الصلاة"
+  },
+  "notify_pre_title": {
+    "message": "{prayer} بعد {minutes} دقيقة"
+  },
+  "notify_pre_body": {
+    "message": "موعد الصلاة: {time}."
+  },
+  "badge_nextTitle": {
+    "message": "Tcalm — الأذان القادم: {prayer} {time}"
+  },
+  "notify_testTitle": {
+    "message": "اختبار إشعارات Tcalm"
+  },
+  "notify_testBody": {
+    "message": "إن كنت تقرأ هذا فقد ظهر الإشعار بنجاح."
+  },
+  "options_notifyTesting": {
+    "message": "جارٍ إرسال الإشعار التجريبي…"
+  },
+  "options_notifyTestOk": {
+    "message": "ظهر الإشعار على الشاشة — إشعارات الصلاة تعمل بشكل صحيح."
+  },
+  "options_notifyTestSuppressed": {
+    "message": "تم إنشاء الإشعار لكن النظام لم يعرضه على الشاشة. فعّل إشعارات فايرفوكس من إعدادات إشعارات النظام، وأطفئ «عدم الإزعاج / مساعد التركيز»، ثم أعد المحاولة."
+  },
+  "options_notifyTestUnknown": {
+    "message": "تم إنشاء الإشعار. لا يمكن التأكد من ظهوره على هذا المتصفح — راقب ظهوره الآن."
+  },
+  "options_notifyTestFail": {
+    "message": "فشل إنشاء الإشعار: {error}"
+  },
+  "options_notifyOsHint": {
+    "message": "إذن الإشعارات أساسي في هذه الإضافة (يُمنح تلقائياً عند التثبيت وليس اختيارياً). إن لم تظهر الإشعارات رغم نجاح الاختبار: تأكد من السماح لفايرفوكس بإرسال الإشعارات في إعدادات النظام، وأن «عدم الإزعاج» مطفأ، وأن الإشعارات مفعّلة لفايرفوكس من إعدادات المتصفح."
+  },
+  "toast_close": {
+    "message": "إغلاق"
+  },
+  "options_alertWindowMode": {
+    "message": "نافذة التنبيه على الشاشة"
+  },
+  "options_alertWindowMode_always": {
+    "message": "دائماً"
+  },
+  "options_alertWindowMode_auto": {
+    "message": "البديل"
+  },
+  "options_alertWindowMode_never": {
+    "message": "أبداً"
+  },
+  "options_alertWindowModeHint": {
+    "message": "نافذة من Tcalm لا يستطيع النظام حجبها؛ «البديل» عند فشل الإشعار فقط. الافتراضي: أبداً."
+  },
+  "options_alertWindowSeconds": {
+    "message": "مدة بقاء نافذة التنبيه (بالثواني)"
+  },
+  "options_alertWindowSecondsHint": {
+    "message": "تُغلق النافذة تلقائياً بعد هذه المدة، ويمكن إغلاقها فوراً بالنقر عليها أو بزر الإغلاق أو بزر Esc."
+  },
+  "options_toastTestOpened": {
+    "message": "تم فتح نافذة التنبيه — يجب أن تراها الآن على الشاشة، وهذا هو الضمان البديل الذي لا يفشل."
+  },
+  "options_toastTestDisabled": {
+    "message": "نافذة التنبيه معطّلة من الإعدادات (الوضع: أبداً)."
+  },
+  "options_toastTestFailed": {
+    "message": "تعذّر فتح نافذة التنبيه — أرسل هذا السجل مع بلاغك."
+  },
+  "options_title": {
+    "message": "إعدادات Tcalm"
+  },
+  "options_sectionGeneral": {
+    "message": "عام"
+  },
+  "options_language": {
+    "message": "اللغة"
+  },
+  "options_language_auto": {
+    "message": "حسب لغة فايرفوكس"
+  },
+  "options_theme": {
+    "message": "المظهر"
+  },
+  "options_theme_light": {
+    "message": "فاتح"
+  },
+  "options_theme_dark": {
+    "message": "داكن"
+  },
+  "options_theme_system": {
+    "message": "حسب النظام"
+  },
+  "options_timeFormat": {
+    "message": "تنسيق الوقت"
+  },
+  "options_timeFormat_12": {
+    "message": "12 ساعة (ص / م)"
+  },
+  "options_timeFormat_24": {
+    "message": "24 ساعة"
+  },
+  "options_timeFormatHint": {
+    "message": "يظهر في النافذة المنبثقة وفي الإشعارات (12 ساعة هي الافتراضية)."
+  },
+  "options_sectionLocation": {
+    "message": "الموقع"
+  },
+  "options_locationMode": {
+    "message": "مصدر الموقع"
+  },
+  "options_location_auto": {
+    "message": "تلقائي (تحديد الموقع عبر المتصفح)"
+  },
+  "options_location_manual": {
+    "message": "يدوي"
+  },
+  "options_location_autoHint": {
+    "message": "في الوضع التلقائي يطلب Tcalm موقعك من فايرفوكس فقط عند الضغط على الزر، ولا تُرسل إحداثياتك إلى أي جهة خارجية، باستثناء خدمة تحديد الموقع عبر IP الاختيارية أدناه."
+  },
+  "options_gpsButton": {
+    "message": "تحديد موقعي"
+  },
+  "options_gpsWorking": {
+    "message": "بانتظار الإذن…"
+  },
+  "options_gpsSuccess": {
+    "message": "تم تحديد الموقع: {place}"
+  },
+  "options_gpsDenied": {
+    "message": "تم رفض الإذن — فعّل تحديد الموقع لهذا الموقع من إعدادات فايرفوكس."
+  },
+  "options_gpsFailed": {
+    "message": "تعذر تحديد موقعك."
+  },
+  "options_ipButton": {
+    "message": "موقع تقريبي عبر عنوان IP"
+  },
+  "options_ipHint": {
+    "message": "اختياري: يرسل عنوان IP الخاص بك إلى الخدمة العامة ipwho.is لتقدير المدينة والمنطقة الزمنية. لا يُرسل أي شيء خلاف ذلك."
+  },
+  "options_ipSuccess": {
+    "message": "تم العثور على موقع تقريبي: {place}"
+  },
+  "options_ipFailed": {
+    "message": "فشل تحديد الموقع عبر IP أو لم يُمنح الإذن."
+  },
+  "options_country": {
+    "message": "الدولة"
+  },
+  "options_city": {
+    "message": "المدينة"
+  },
+  "options_worldHint": {
+    "message": "اختر من بين {countries} دولة و{cities} مدينة من جميع أنحاء العالم — تُملأ الإحداثيات والمنطقة الزمنية تلقائياً عند الاختيار."
+  },
+  "options_latitude": {
+    "message": "خط العرض"
+  },
+  "options_longitude": {
+    "message": "خط الطول"
+  },
+  "options_timezone": {
+    "message": "المنطقة الزمنية"
+  },
+  "options_timezone_auto": {
+    "message": "حسب المنطقة الزمنية للنظام"
+  },
+  "options_coordsHint": {
+    "message": "الإحداثيات هي أساس الحساب؛ أما المدينة والدولة فهما للتسمية فقط."
+  },
+  "options_invalidCoords": {
+    "message": "يجب أن يكون خط العرض بين ‎-90‎ و90 وخط الطول بين ‎-180‎ و180."
+  },
+  "options_sectionCalculation": {
+    "message": "حساب مواقيت الصلاة"
+  },
+  "options_method": {
+    "message": "طريقة الحساب"
+  },
+  "options_methodHint": {
+    "message": "الافتراضية هي الهيئة المصرية العامة للمساحة، كما في Tcalm الأصلية."
+  },
+  "options_asr": {
+    "message": "طريقة العصر"
+  },
+  "options_asr_standard": {
+    "message": "القياسية — معامل الظل 1 (الشافعي والمالكي والحنبلي)"
+  },
+  "options_asr_hanafi": {
+    "message": "الحنفية — معامل الظل 2"
+  },
+  "options_highLat": {
+    "message": "قاعدة خطوط العرض العالية"
+  },
+  "options_highLat_night-middle": {
+    "message": "منتصف الليل"
+  },
+  "options_highLat_angle-based": {
+    "message": "حسب الزاوية"
+  },
+  "options_highLat_one-seventh": {
+    "message": "سُبع الليل"
+  },
+  "options_highLat_unresolved": {
+    "message": "بدون تعديل (قد لا تتوفر المواقيت في خطوط العرض القطبية)"
+  },
+  "options_highLatHint": {
+    "message": "تُطبق قرب المناطق القطبية حيث لا تصل الشمس إلى زوايا الفجر والعشاء."
+  },
+  "options_hijriOffset": {
+    "message": "تعديل التاريخ الهجري (بالأيام)"
+  },
+  "options_hijriHint": {
+    "message": "يزيح التاريخ الهجري الظاهر في النافذة المنبثقة إذا اختلف التقويم المحلي."
+  },
+  "options_sectionNotifications": {
+    "message": "الإشعارات"
+  },
+  "options_notifications": {
+    "message": "إشعارات الصلاة"
+  },
+  "options_minutesBefore": {
+    "message": "تنبيه مسبق (دقائق قبل الصلاة)"
+  },
+  "options_minutesBeforeHint": {
+    "message": "0 = إشعار عند وقت الصلاة فقط (سلوك Tcalm)."
+  },
+  "options_sound": {
+    "message": "تشغيل نغمة قصيرة"
+  },
+  "options_soundHint": {
+    "message": "حيثما سمح فايرفوكس بتشغيل الصوت من صفحة الخلفية."
+  },
+  "options_perPrayer": {
+    "message": "الصلوات المُشعَر عنها"
+  },
+  "options_testNotification": {
+    "message": "إرسال إشعار تجريبي"
+  },
+  "options_sectionMedia": {
+    "message": "إيقاف الوسائط"
+  },
+  "options_media": {
+    "message": "إيقاف الوسائط عند وقت الصلاة"
+  },
+  "options_mediaScope": {
+    "message": "النطاق"
+  },
+  "options_mediaScope_all": {
+    "message": "جميع تبويبات فايرفوكس"
+  },
+  "options_mediaScope_allowlist": {
+    "message": "المواقع المسموح بها فقط"
+  },
+  "options_mediaSites": {
+    "message": "المواقع المسموح بها"
+  },
+  "options_mediaSitesHint": {
+    "message": "أسماء نطاقات مثل youtube.com أو music.youtube.com. تُطبق في وضع القائمة المسموحة فقط."
+  },
+  "options_mediaAddSite": {
+    "message": "إضافة موقع"
+  },
+  "options_mediaRemoveSite": {
+    "message": "إزالة"
+  },
+  "options_mediaInvalidSite": {
+    "message": "أدخل اسم نطاق بسيط مثل \"youtube.com\"."
+  },
+  "options_mediaDuration": {
+    "message": "مدة الإيقاف (بالدقائق)"
+  },
+  "options_mediaDurationHint": {
+    "message": "0 = تبقى الوسائط متوقفة حتى تعيد تشغيلها بنفسك (الافتراضي في Tcalm). أكبر من 0: تبقى متوقفة للمدة المحددة ثم يعيد Tcalm تشغيل ما أوقفه هو فقط."
+  },
+  "options_mediaPermission": {
+    "message": "إذن الوصول إلى المواقع"
+  },
+  "options_mediaGrant": {
+    "message": "منح الوصول إلى جميع المواقع"
+  },
+  "options_mediaGranted": {
+    "message": "تم المنح — يمكن لـ Tcalm إيقاف الوسائط في تبويبات فايرفوكس."
+  },
+  "options_mediaNotGranted": {
+    "message": "لم يُمنح — لا يستطيع Tcalm إيقاف الوسائط قبل منح إذن الوصول إلى المواقع، ويمكنك سحبه في أي وقت من إعدادات إضافات فايرفوكس."
+  },
+  "options_mediaPermissionMissing": {
+    "message": "⚠ إيقاف الوسائط يحتاج منح إذن الوصول إلى المواقع أولاً — امنحه أدناه ثم أعد المحاولة."
+  },
+  "options_openSetup": {
+    "message": "إعداد الصلاحيات"
+  },
+  "options_mediaLimitation": {
+    "message": "ملاحظة: يستطيع امتداد فايرفوكس إيقاف الوسائط داخل تبويبات فايرفوكس — بما فيها المشغلات المخصصة التي تُبقي عنصر الصوت خارج الصفحة (مثل SoundCloud) ومواقع Web Audio، ولا يمكنه إيقاف تطبيقات سطح المكتب مثل Spotify أو VLC — ذلك يتطلب نسخة Tcalm لسطح المكتب."
+  },
+  "options_testMedia": {
+    "message": "تجربة إيقاف الوسائط"
+  },
+  "options_resumeMedia": {
+    "message": "استئناف الوسائط المتوقفة"
+  },
+  "options_mediaResumeNote": {
+    "message": "الاستئناف يعيد تشغيل ما أوقفه آخر حدث إيقاف فقط — التبويبات المتوقفة قبل ذلك تبقى متوقفة حتى تشغّلها بنفسك. كما يستهدف الإيقاف التبويبات التي تصدر صوتاً (أو المعروضة على الشاشة) فقط، لذا لم يَعُد عدد التبويبات الكبير يبطئه."
+  },
+  "options_mediaPlatforms": {
+    "message": "يوقف أي موقع يشغّل وسائط داخل تبويب فايرفوكس — يوتيوب ونت فلكس وسبوتفاي وأبل ميوزك وأنغامي وديزر وشاهد وساوند كلاود وكل مشغّل آخر، بما فيها المشغّلات التي تُبقي عنصر الصوت خارج الصفحة. وأثناء مدة الإيقاف (أكثر من صفر) يُعاد إيقاف المشغّلات التي تحاول الاستئناف خلال ثوانٍ."
+  },
+  "options_testNoMedia": {
+    "message": "لا توجد وسائط قيد التشغيل — تم فحص {candidates} تبويباً به نشاط صوتي أو معروض، و{unreachable} غير متاح للوصول. افتح تبويباً يشغّل صوتاً أو فيديو ثم أعد المحاولة."
+  },
+  "options_testResistant": {
+    "message": "الوسائط على {hosts} قاومت الإيقاف — أعد تحميل ذلك التبويب مرة واحدة ثم أعد الاختبار."
+  },
+  "options_testWebAudio": {
+    "message": " +{count} صوت ويب"
+  },
+  "options_testSinglePause": {
+    "message": "ستبقى متوقفة حتى تعيد تشغيلها بنفسك"
+  },
+  "options_testAutoResume": {
+    "message": "يُستأنف تلقائياً في {time}"
+  },
+  "options_mediaResumed": {
+    "message": "تم استئناف {count} من عناصر آخر عملية إيقاف."
+  },
+  "options_mediaNothingToResume": {
+    "message": "لا يوجد شيء من آخر عملية إيقاف في انتظار الاستئناف."
+  },
+  "options_mediaNoResponse": {
+    "message": "لم يستجب السكربت الخلفي — أعد تحميل هذه الصفحة من فضلك."
+  },
+  "onboarding_title": {
+    "message": "مرحباً بك في Tcalm"
+  },
+  "onboarding_tagline": {
+    "message": "مواقيت صلاة هادئة، داخل فايرفوكس مباشرة"
+  },
+  "onboarding_intro": {
+    "message": "يعرض Tcalm مواقيت الصلاة ويُذكّرك عند دخول الوقت، ويمكنه إيقاف الوسائط المشغّلة تلقائياً في تبويبات فايرفوكس. كل الحسابات تتم محلياً — بياناتك لا تغادر جهازك أبداً."
+  },
+  "onboarding_step1": {
+    "message": "الترحيب"
+  },
+  "onboarding_step2": {
+    "message": "الموقع"
+  },
+  "onboarding_step3": {
+    "message": "الصلاحيات"
+  },
+  "onboarding_continue": {
+    "message": "متابعة"
+  },
+  "onboarding_back": {
+    "message": "رجوع"
+  },
+  "onboarding_featTitle": {
+    "message": "ماذا يفعل Tcalm؟"
+  },
+  "onboarding_featTimes": {
+    "message": "مواقيت الصلاة والإشعارات"
+  },
+  "onboarding_featTimesNote": {
+    "message": "مواقيت الصلاة الخمسة تُحسب على جهازك، مع تنبيه وصوت عند دخول الوقت."
+  },
+  "onboarding_featMedia": {
+    "message": "إيقاف الوسائط وقت الصلاة"
+  },
+  "onboarding_featMediaNote": {
+    "message": "الصوت والفيديو المشغّل في تبويبات فايرفوكس يتوقف وقت الصلاة — ويعود من بعد ذلك."
+  },
+  "onboarding_featPrivacy": {
+    "message": "خصوصية وعمل دون اتصال"
+  },
+  "onboarding_featPrivacyNote": {
+    "message": "لا حسابات ولا تتبّع ولا جمع بيانات — كل الحسابات تتم محلياً دائماً."
+  },
+  "onboarding_platformsTitle": {
+    "message": "يعمل أينما تشاهد وتستمع"
+  },
+  "onboarding_platformsNote": {
+    "message": "…وأي موقع آخر يشغّل صوتاً أو فيديو داخل تبويبات فايرفوكس."
+  },
+  "onboarding_locationTitle": {
+    "message": "أين تُحسب مواقيت الصلاة؟"
+  },
+  "onboarding_locationNote": {
+    "message": "طريقة الحساب تتبع اعتماد دولتك، ويمكنك تغيير كل ذلك في أي وقت من الإعدادات."
+  },
+  "onboarding_countryLabel": {
+    "message": "الدولة"
+  },
+  "onboarding_cityLabel": {
+    "message": "المدينة"
+  },
+  "onboarding_locationSaved": {
+    "message": "تم حفظ الموقع — سيتحدّث المواقيت بعد لحظات."
+  },
+  "onboarding_permsTitle": {
+    "message": "الصلاحيات"
+  },
+  "onboarding_permsIntro": {
+    "message": "يمكنك تغيير هذه الإعدادات في أي وقت من صفحة إعدادات Tcalm."
+  },
+  "onboarding_permCore": {
+    "message": "مواقيت الصلاة والإشعارات"
+  },
+  "onboarding_permCoreNote": {
+    "message": "أساسية — تُمنح تلقائياً عند التثبيت."
+  },
+  "onboarding_permMedia": {
+    "message": "إيقاف الوسائط عند وقت الصلاة"
+  },
+  "onboarding_permMediaNote": {
+    "message": "اختيارية — تتيح لـ Tcalm إيقاف الفيديو/الصوت المشغّل في تبويبات فايرفوكس، وتحتاج الوصول إلى جميع المواقع."
+  },
+  "onboarding_permIp": {
+    "message": "تحديد الموقع عبر IP"
+  },
+  "onboarding_permIpNote": {
+    "message": "اختيارية — طلب واحد إلى ipwho.is لتقدير مدينتك عند الضغط على الزر، ولا يُرسل أي شيء خلاف ذلك."
+  },
+  "onboarding_grantBtn": {
+    "message": "تفعيل جميع الصلاحيات"
+  },
+  "onboarding_grantWorking": {
+    "message": "بانتظار فايرفوكس…"
+  },
+  "onboarding_grantedTitle": {
+    "message": "تم تفعيل جميع الصلاحيات"
+  },
+  "onboarding_grantedNote": {
+    "message": "إيقاف الوسائط وتحديد الموقع عبر IP جاهزان الآن، ويمكنك تشغيل أو إيقاف كل ميزة من الإعدادات."
+  },
+  "onboarding_openSettings": {
+    "message": "فتح الإعدادات"
+  },
+  "onboarding_done": {
+    "message": "تم"
+  },
+  "onboarding_privacy": {
+    "message": "الخصوصية بالتصميم: لا حسابات، لا تتبّع، لا جمع بيانات. راجع وصف الصلاحيات في فايرفوكس لمعرفة النطاق بالضبط."
+  },
+  "onboarding_revokedNote": {
+    "message": "تم سحب الصلاحيات — اضغط الزر لتفعيلها من جديد."
+  },
+  "options_sectionDiagnostics": {
+    "message": "التشخيص"
+  },
+  "diag_hint": {
+    "message": "أحدث الأحداث الداخلية، وتُحفظ على جهازك فقط، وتُحذف تلقائياً بعد 7 أيام حتى لا تؤثر على حجم البيانات أو أداء الإضافة. لو حدثت أي مشكلة اضغط «نسخ من أجل الدعم» وأرسل السجل مع بلاغك."
+  },
+  "diag_empty": {
+    "message": "لا توجد أحداث مسجلة — لم تُبلّغ الإضافة عن أي أخطاء."
+  },
+  "diag_summary": {
+    "message": "عرض {shown} من {total} حدثاً — تُحذف تلقائياً بعد 7 أيام"
+  },
+  "diag_copy": {
+    "message": "نسخ من أجل الدعم"
+  },
+  "diag_clear": {
+    "message": "مسح السجل"
+  },
+  "diag_copied": {
+    "message": "تم نسخ بيانات التشخيص إلى الحافظة."
+  },
+  "options_sectionAdvanced": {
+    "message": "خيارات متقدمة"
+  },
+  "options_recalculate": {
+    "message": "إعادة الحساب الآن"
+  },
+  "options_clearCache": {
+    "message": "مسح البيانات المخزنة مؤقتاً"
+  },
+  "options_export": {
+    "message": "تصدير الإعدادات"
+  },
+  "options_import": {
+    "message": "استيراد الإعدادات"
+  },
+  "options_reset": {
+    "message": "استعادة الإعدادات الافتراضية"
+  },
+  "options_resetConfirm": {
+    "message": "هل تريد استعادة جميع الإعدادات الافتراضية؟"
+  },
+  "options_saved": {
+    "message": "تم حفظ الإعدادات."
+  },
+  "options_importInvalid": {
+    "message": "الملف المحدد ليس ملف إعدادات Tcalm صالحاً."
+  },
+  "options_importSuccess": {
+    "message": "تم استيراد الإعدادات وتطبيقها."
+  },
+  "options_recalculated": {
+    "message": "تمت إعادة حساب الجدول."
+  },
+  "options_cacheCleared": {
+    "message": "تم مسح البيانات المخزنة مؤقتاً."
+  },
+  "options_resetDone": {
+    "message": "تمت استعادة الإعدادات الافتراضية."
+  },
+  "options_sectionAbout": {
+    "message": "حول الإضافة"
+  },
+  "about_intro": {
+    "message": "هذه الإضافة مستوحاة من فكرة مشروع Tcalm مفتوح المصدر وتستند إليها: تذكير هادئ بمواقيت الصلاة يعمل دون اتصال، مع إيقاف تلقائي للوسائط."
+  },
+  "about_credit": {
+    "message": "شكر جزيل لمؤلف مشروع Tcalm الأصلي على هذه الفكرة الرائعة."
+  },
+  "about_link_label": {
+    "message": "المشروع الأصلي على GitHub"
+  },
+  "about_author": {
+    "message": "نسخة المتصفح من تطوير محمد نسيم."
+  },
+  "status_calculating": {
+    "message": "جارٍ حساب مواقيت الصلاة…"
+  }
+}

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="system">
+  <head>
+    <meta charset="utf-8" />
+    <title data-i18n="options_title">Tcalm Settings</title>
+    <!-- v1.1.20: the settings tab gets the extension logo in the tab bar
+         (Firefox favicon contract for moz-extension:// pages). -->
+    <link rel="icon" type="image/png" sizes="48x48" href="../icons/icon-48.png" />
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <!--
+      Boot self-diagnosis: visible until options.js executes and hides it.
+      See src/popup/popup.html for rationale.
+    -->
+    <div id="boot-warning" class="boot-warning" role="alert">
+      <div class="boot-warning-line">
+        <strong>⚠ Extension code did not start.</strong>
+        You are likely loading the source folder, which contains no built
+        JavaScript. Load the file <code>tcalm-v1.1.26.xpi</code>
+        via <code>about:debugging</code> → “Load Temporary Add-on…”.
+      </div>
+      <div class="boot-warning-line" dir="rtl" lang="ar">
+        <strong>⚠ لم يبدأ تشغيل الإضافة.</strong>
+        على الأغلب تم تحميل مجلد المصدر الذي لا يحتوي على الجافاسكريبت المُبنى.
+        افتح صفحة <code>about:debugging</code> ← اختر “Load Temporary Add-on…”
+        ثم حدّد ملف <code>tcalm-v1.1.26.xpi</code>.
+      </div>
+      <div class="boot-error-detail" id="boot-error-detail" hidden></div>
+    </div>
+
+    <div class="ios-app">
+      <!-- iOS 18 glass navigation bar: brand logo + title + saved toast. -->
+      <header class="ios-topbar ios-glass">
+        <img src="../logo/logo.png" alt="" class="page-logo" width="40" height="28" />
+        <h1 data-i18n="options_title">Tcalm Settings</h1>
+        <span class="toast" id="toast" role="status" hidden></span>
+      </header>
+
+      <div class="ios-layout">
+        <!--
+          iOS-style section navigation. Desktop: sidebar; narrow screens:
+          horizontal pill scroller. data-nav-target values are section ids.
+          v1.1.18: presentation only — the controller lives at the end of
+          options.ts and never touches settings state.
+        -->
+        <nav class="ios-sidebar ios-glass" aria-label="Settings sections">
+          <button type="button" class="nav-item is-active" data-nav-target="section-general">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span data-i18n="options_sectionGeneral">General</span>
+          </button>
+          <button type="button" class="nav-item" data-nav-target="section-location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-5.1-7-10.5a7 7 0 1 1 14 0C19 15.9 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.6"/></svg>
+            <span data-i18n="options_sectionLocation">Location</span>
+          </button>
+          <button type="button" class="nav-item" data-nav-target="section-calculation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.7A8.2 8.2 0 1 1 9.6 4.2a6.8 6.8 0 0 0 10.4 10.5z"/><path d="M17.5 3.2l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg>
+            <span data-i18n="options_sectionCalculation">Prayer calculation</span>
+          </button>
+          <button type="button" class="nav-item" data-nav-target="section-notifications">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8.5a6 6 0 1 0-12 0c0 6.6-2.7 8.5-2.7 8.5h17.4S18 15.1 18 8.5"/><path d="M13.7 20.5a2 2 0 0 1-3.4 0"/></svg>
+            <span data-i18n="options_sectionNotifications">Notifications</span>
+          </button>
+          <button type="button" class="nav-item" data-nav-target="section-media">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10.2 9.4v5.2M13.8 9.4v5.2"/></svg>
+            <span data-i18n="options_sectionMedia">Media pause</span>
+          </button>
+          <button type="button" class="nav-item" data-nav-target="section-diagnostics">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h3.4l2.3-6.4 3.9 12.8 2.3-6.4H21"/></svg>
+            <span data-i18n="options_sectionDiagnostics">Diagnostics</span>
+          </button>
+          <button type="button" class="nav-item" data-nav-target="section-advanced">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5h8.6M17.4 6.5H20M4 12h2.6M11.4 12H20M4 17.5h8.6M17.4 17.5H20"/><circle cx="15" cy="6.5" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="15" cy="17.5" r="2"/></svg>
+            <span data-i18n="options_sectionAdvanced">Advanced</span>
+          </button>
+          <button type="button" class="nav-item" data-nav-target="section-about">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11.2v5"/><path d="M12 7.6v.01"/></svg>
+            <span data-i18n="options_sectionAbout">About</span>
+          </button>
+        </nav>
+
+        <main class="ios-content">
+          <!-- ============================================================ General -->
+          <section class="ios-section is-active" id="section-general">
+            <h2 class="ios-section-title" data-i18n="options_sectionGeneral">General</h2>
+
+            <div class="ios-group">
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-blue" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14.5 14.5 0 0 1 0 18M12 3a14.5 14.5 0 0 0 0 18"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <label class="row-label" for="language" data-i18n="options_language">Language</label>
+                  </div>
+                </div>
+                <div class="row-value">
+                  <select id="language">
+                    <option value="auto" data-i18n="options_language_auto">Follow Firefox</option>
+                    <option value="en">English</option>
+                    <option value="ar">العربية</option>
+                  </select>
+                  <svg class="row-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 6.5 15.5 12l-6 5.5"/></svg>
+                </div>
+              </div>
+
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-indigo" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor" stroke="none"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <label class="row-label" for="theme" data-i18n="options_theme">Appearance</label>
+                  </div>
+                </div>
+                <div class="row-value">
+                  <select id="theme">
+                    <option value="light" data-i18n="options_theme_light">Light</option>
+                    <option value="dark" data-i18n="options_theme_dark">Dark</option>
+                    <option value="system" data-i18n="options_theme_system">Match system</option>
+                  </select>
+                  <svg class="row-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 6.5 15.5 12l-6 5.5"/></svg>
+                </div>
+              </div>
+
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-teal" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.2V12l3.4 2"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <label class="row-label" for="time-format" data-i18n="options_timeFormat">Time format</label>
+                    <p class="hint" data-i18n="options_timeFormatHint"></p>
+                  </div>
+                </div>
+                <div class="row-value">
+                  <select id="time-format">
+                    <option value="12h" data-i18n="options_timeFormat_12">12-hour (AM / PM)</option>
+                    <option value="24h" data-i18n="options_timeFormat_24">24-hour</option>
+                  </select>
+                  <svg class="row-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 6.5 15.5 12l-6 5.5"/></svg>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================================ Location -->
+          <section class="ios-section" id="section-location">
+            <h2 class="ios-section-title" data-i18n="options_sectionLocation">Location</h2>
+
+            <div class="ios-group">
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-orange" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.1-7-10.5a7 7 0 1 1 14 0C19 15.9 12 21 12 21z"/><circle cx="12" cy="10.5" r="2.6"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <span class="row-label" data-i18n="options_locationMode">Location source</span>
+                  </div>
+                </div>
+                <div class="ios-segment" role="radiogroup" aria-label="Location source">
+                  <label class="seg-option">
+                    <input type="radio" name="location-mode" id="location-mode-auto" value="auto" />
+                    <span data-i18n="options_location_auto">Automatic (browser geolocation)</span>
+                  </label>
+                  <label class="seg-option">
+                    <input type="radio" name="location-mode" id="location-mode-manual" value="manual" />
+                    <span data-i18n="options_location_manual">Manual</span>
+                  </label>
+                  <span class="seg-thumb" aria-hidden="true"></span>
+                </div>
+              </div>
+            </div>
+
+            <div id="auto-location-box">
+              <div class="ios-group box-pad">
+                <p class="hint" data-i18n="options_location_autoHint"></p>
+                <div class="button-row">
+                  <button id="gps-button" class="btn btn-primary ios-pressable" data-i18n="options_gpsButton">Detect my location</button>
+                </div>
+                <p class="status" id="gps-status"></p>
+                <p class="hint" data-i18n="options_ipHint"></p>
+                <div class="button-row">
+                  <button id="ip-button" class="btn btn-secondary ios-pressable" data-i18n="options_ipButton">Approximate location via IP</button>
+                </div>
+                <p class="status" id="ip-status"></p>
+              </div>
+            </div>
+
+            <div class="ios-group">
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-blue" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="M12 3v18M4 7.5l8 4.5 8-4.5"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <label class="row-label" for="country" data-i18n="options_country">Country</label>
+                    <p class="hint" id="world-hint"></p>
+                  </div>
+                </div>
+                <div class="row-value">
+                  <select id="country"></select>
+                  <svg class="row-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 6.5 15.5 12l-6 5.5"/></svg>
+                </div>
+              </div>
+
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-teal" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V8l8-5 8 5v13"/><path d="M4 21h16M9.5 21v-6h5v6"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <label class="row-label" for="city" data-i18n="options_city">City</label>
+                  </div>
+                </div>
+                <div class="row-value">
+                  <select id="city"></select>
+                  <svg class="row-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 6.5 15.5 12l-6 5.5"/></svg>
+                </div>
+              </div>
+
+              <div class="ios-row row-block">
+                <div class="row-main">
+                  <span class="row-icon t-orange" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5 13.2 13.2 8.5 15.5l2.3-4.7z"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <span class="row-label">
+                      <span data-i18n="options_latitude">Latitude</span>
+                      <span aria-hidden="true"> · </span>
+                      <span data-i18n="options_longitude">Longitude</span>
+                    </span>
+                    <p class="hint" data-i18n="options_coordsHint"></p>
+                  </div>
+                </div>
+                <div class="grid-2">
+                  <input type="number" id="latitude" step="0.0001" min="-90" max="90" aria-label="Latitude" />
+                  <input type="number" id="longitude" step="0.0001" min="-180" max="180" aria-label="Longitude" />
+                </div>
+              </div>
+              <p class="status error row-status" id="coords-status" hidden></p>
+
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-indigo" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.2V12l3.4 2"/><path d="M12 2.8v2M21.2 12h-2M12 21.2v-2M2.8 12h-2"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <label class="row-label" for="timezone" data-i18n="options_timezone">Timezone</label>
+                  </div>
+                </div>
+                <div class="row-value">
+                  <select id="timezone"></select>
+                  <svg class="row-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 6.5 15.5 12l-6 5.5"/></svg>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================================ Calculation -->
+          <section class="ios-section" id="section-calculation">
+            <h2 class="ios-section-title" data-i18n="options_sectionCalculation">Prayer calculation</h2>
+
+            <div class="ios-group">
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-indigo" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.7A8.2 8.2 0 1 1 9.6 4.2a6.8 6.8 0 0 0 10.4 10.5z"/><path d="M17.5 3.2l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <label class="row-label" for="method" data-i18n="options_method">Calculation method</label>
+                    <p class="hint" data-i18n="options_methodHint"></p>
+                  </div>
+                </div>
+                <div class="row-value">
+                  <select id="method"></select>
+                  <svg class="row-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 6.5 15.5 12l-6 5.5"/></svg>
+                </div>
+              </div>
+
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-orange" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.4M12 19v2.4M4.6 12H2.2M21.8 12h-2.4M6.3 6.3 4.6 4.6M19.4 19.4l-1.7-1.7M17.7 6.3l1.7-1.7M4.6 19.4l1.7-1.7"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <label class="row-label" for="asr" data-i18n="options_asr">Asr method</label>
+                  </div>
+                </div>
+                <div class="row-value">
+                  <select id="asr">
+                    <option value="standard" data-i18n="options_asr_standard">Standard</option>
+                    <option value="hanafi" data-i18n="options_asr_hanafi">Hanafi</option>
+                  </select>
+                  <svg class="row-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 6.5 15.5 12l-6 5.5"/></svg>
+                </div>
+              </div>
+
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-gray" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2.8 18.5h18.4M5.5 18.5 12 6.2l6.5 12.3"/><path d="M9 13.6h6"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <label class="row-label" for="highlat" data-i18n="options_highLat">High latitude rule</label>
+                    <p class="hint" data-i18n="options_highLatHint"></p>
+                  </div>
+                </div>
+                <div class="row-value">
+                  <select id="highlat">
+                    <option value="night-middle" data-i18n="options_highLat_night-middle"></option>
+                    <option value="angle-based" data-i18n="options_highLat_angle-based"></option>
+                    <option value="one-seventh" data-i18n="options_highLat_one-seventh"></option>
+                    <option value="unresolved" data-i18n="options_highLat_unresolved"></option>
+                  </select>
+                  <svg class="row-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 6.5 15.5 12l-6 5.5"/></svg>
+                </div>
+              </div>
+
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-teal" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4M16 3v4M3.5 10.5h17M8 14.6l1.7 1.7 3.6-3.6"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <label class="row-label" for="hijri-offset" data-i18n="options_hijriOffset">Hijri date adjustment</label>
+                    <p class="hint" data-i18n="options_hijriHint"></p>
+                  </div>
+                </div>
+                <div class="row-value">
+                  <select id="hijri-offset">
+                    <option value="-2">-2</option>
+                    <option value="-1">-1</option>
+                    <option value="0">0</option>
+                    <option value="1">+1</option>
+                    <option value="2">+2</option>
+                  </select>
+                  <svg class="row-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 6.5 15.5 12l-6 5.5"/></svg>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================================ Notifications -->
+          <section class="ios-section" id="section-notifications">
+            <h2 class="ios-section-title" data-i18n="options_sectionNotifications">Notifications</h2>
+
+            <div class="ios-group">
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-red" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8.5a6 6 0 1 0-12 0c0 6.6-2.7 8.5-2.7 8.5h17.4S18 15.1 18 8.5"/><path d="M13.7 20.5a2 2 0 0 1-3.4 0"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <span class="row-label" data-i18n="options_notifications">Prayer notifications</span>
+                  </div>
+                </div>
+                <label class="ios-switch">
+                  <input type="checkbox" id="notifications-enabled" />
+                  <span class="sw-track"><span class="sw-thumb"></span></span>
+                </label>
+              </div>
+
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-orange" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.2" r="7.8"/><path d="M12 9.6v3.6l2.6 1.6M9.2 2.8h5.6"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <label class="row-label" for="minutes-before" data-i18n="options_minutesBefore">Advance notice</label>
+                    <p class="hint" data-i18n="options_minutesBeforeHint"></p>
+                  </div>
+                </div>
+                <input type="number" class="ios-stepper" id="minutes-before" min="0" max="30" step="1" />
+              </div>
+
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-pink" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5.2 6.5 9.4H3.4v5.2h3.1L11 18.8z"/><path d="M15.2 9.2a4 4 0 0 1 0 5.6M18 6.6a7.6 7.6 0 0 1 0 10.8"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <span class="row-label" data-i18n="options_sound">Play a short chime</span>
+                    <p class="hint" data-i18n="options_soundHint"></p>
+                  </div>
+                </div>
+                <label class="ios-switch">
+                  <input type="checkbox" id="sound-enabled" />
+                  <span class="sw-track"><span class="sw-thumb"></span></span>
+                </label>
+              </div>
+
+              <!-- v1.1.17: the guaranteed-visible alert window. v1.1.22: the
+                   select became a 3-way iOS segmented control — one tap to
+                   switch, instant pressed-state feedback, no dropdown. -->
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-indigo" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="4.5" width="17.6" height="13" rx="3"/><path d="M3.2 8.6h17.6M6.4 6.6h.01M9 6.6h.01"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <span class="row-label" data-i18n="options_alertWindowMode">On-screen alert window</span>
+                    <p class="hint" data-i18n="options_alertWindowModeHint"></p>
+                  </div>
+                </div>
+                <div class="ios-segment seg-3" role="radiogroup" aria-label="On-screen alert window">
+                  <label class="seg-option">
+                    <input type="radio" name="alert-window-mode" id="alert-window-mode-always" value="always" />
+                    <span data-i18n="options_alertWindowMode_always"></span>
+                  </label>
+                  <label class="seg-option">
+                    <input type="radio" name="alert-window-mode" id="alert-window-mode-auto" value="auto" />
+                    <span data-i18n="options_alertWindowMode_auto"></span>
+                  </label>
+                  <label class="seg-option">
+                    <input type="radio" name="alert-window-mode" id="alert-window-mode-never" value="never" />
+                    <span data-i18n="options_alertWindowMode_never"></span>
+                  </label>
+                  <span class="seg-thumb" aria-hidden="true"></span>
+                </div>
+              </div>
+
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-teal" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.2" r="7.8"/><path d="M12 9.6v3.6l2.6 1.6M9.2 2.8h5.6"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <label class="row-label" for="alert-window-seconds" data-i18n="options_alertWindowSeconds"></label>
+                    <p class="hint" data-i18n="options_alertWindowSecondsHint"></p>
+                  </div>
+                </div>
+                <input type="number" class="ios-stepper" id="alert-window-seconds" min="10" max="60" step="1" />
+              </div>
+            </div>
+
+            <div class="ios-group chips-block">
+              <span class="ios-group-caption" data-i18n="options_perPrayer">Prayers to notify</span>
+              <div class="chips" id="prayer-toggles">
+                <label class="chip"><input type="checkbox" id="prayer-fajr" /><span data-i18n="prayer_fajr"></span></label>
+                <label class="chip"><input type="checkbox" id="prayer-dhuhr" /><span data-i18n="prayer_dhuhr"></span></label>
+                <label class="chip"><input type="checkbox" id="prayer-asr" /><span data-i18n="prayer_asr"></span></label>
+                <label class="chip"><input type="checkbox" id="prayer-maghrib" /><span data-i18n="prayer_maghrib"></span></label>
+                <label class="chip"><input type="checkbox" id="prayer-isha" /><span data-i18n="prayer_isha"></span></label>
+              </div>
+            </div>
+
+            <div class="ios-group box-pad">
+              <div class="button-row">
+                <button id="test-notification" class="btn btn-primary ios-pressable" data-i18n="options_testNotification">Send a test notification</button>
+              </div>
+              <!-- v1.1.6: real PASS/FAIL for the notification chain (onShown proof). -->
+              <p class="status" id="notify-test-status" hidden></p>
+              <!-- v1.1.17: verdict of the guaranteed alert-window channel. -->
+              <p class="status" id="toast-test-status" hidden></p>
+              <p class="hint" data-i18n="options_notifyOsHint"></p>
+            </div>
+          </section>
+
+          <!-- ============================================================ Media -->
+          <section class="ios-section" id="section-media">
+            <h2 class="ios-section-title" data-i18n="options_sectionMedia">Media pause</h2>
+
+            <div class="ios-group">
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-indigo" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M10.2 9.4v5.2M13.8 9.4v5.2"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <span class="row-label" data-i18n="options_media">Pause media at prayer time</span>
+                  </div>
+                </div>
+                <label class="ios-switch">
+                  <input type="checkbox" id="media-enabled" />
+                  <span class="sw-track"><span class="sw-thumb"></span></span>
+                </label>
+              </div>
+
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-blue" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M6.4 6.4a8 8 0 0 0 0 11.2M17.6 6.4a8 8 0 0 1 0 11.2M3.9 3.9a11.5 11.5 0 0 0 0 16.2M20.1 3.9a11.5 11.5 0 0 1 0 16.2"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <span class="row-label" data-i18n="options_mediaScope">Scope</span>
+                  </div>
+                </div>
+                <div class="ios-segment" role="radiogroup" aria-label="Media scope">
+                  <label class="seg-option">
+                    <input type="radio" name="media-scope" id="media-scope-all" value="all" />
+                    <span data-i18n="options_mediaScope_all">All Firefox tabs</span>
+                  </label>
+                  <label class="seg-option">
+                    <input type="radio" name="media-scope" id="media-scope-allowlist" value="allowlist" />
+                    <span data-i18n="options_mediaScope_allowlist">Only allowed sites</span>
+                  </label>
+                  <span class="seg-thumb" aria-hidden="true"></span>
+                </div>
+              </div>
+
+              <div class="ios-row">
+                <div class="row-main">
+                  <span class="row-icon t-teal" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.2" r="7.8"/><path d="M12 9.6v3.6l2.6 1.6M9.2 2.8h5.6"/><path d="M10.2 16.8h4"/></svg>
+                  </span>
+                  <div class="row-text">
+                    <label class="row-label" for="media-duration" data-i18n="options_mediaDuration">Pause duration</label>
+                    <p class="hint" data-i18n="options_mediaDurationHint"></p>
+                  </div>
+                </div>
+                <input type="number" class="ios-stepper" id="media-duration" min="0" max="120" step="1" />
+              </div>
+            </div>
+
+            <div id="allowlist-box">
+              <div class="ios-group box-pad">
+                <label class="ios-group-caption" for="new-site" data-i18n="options_mediaSites">Allowed sites</label>
+                <div class="field-inline">
+                  <input type="text" id="new-site" placeholder="youtube.com" />
+                  <button id="add-site" class="btn btn-secondary ios-pressable" data-i18n="options_mediaAddSite">Add site</button>
+                </div>
+                <p class="hint" data-i18n="options_mediaSitesHint"></p>
+                <ul id="site-list" class="site-list"></ul>
+                <p class="status error" id="site-status" hidden></p>
+              </div>
+            </div>
+
+            <!-- v1.1.22: the flat permission row became a status card with a
+                 real warning state — when the site access permission is OFF it
+                 renders amber, names the consequence, and leads with the grant
+                 action; "Permission setup" reopens the onboarding page. -->
+            <div class="ios-group box-pad perm-card" id="perm-card" data-state="denied">
+              <div class="perm-head">
+                <span class="perm-icon" id="perm-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 10.2h3.5L12 7.4l3.5 2.8H19z"/><path d="M5.8 10.2v9.3h12.4v-9.3"/><path d="M10.2 13.8h3.6v5.7h-3.6z"/></svg>
+                </span>
+                <div class="perm-head-text">
+                  <span class="row-label" data-i18n="options_mediaPermission">Site access permission</span>
+                  <p class="status" id="permission-status" role="status"></p>
+                </div>
+              </div>
+              <div class="button-row">
+                <button id="grant-permission" class="btn btn-primary ios-pressable" data-i18n="options_mediaGrant">Grant access to all sites</button>
+                <button id="open-setup" class="btn btn-secondary ios-pressable" data-i18n="options_openSetup">Permission setup</button>
+              </div>
+            </div>
+
+            <div class="ios-group box-pad">
+              <div class="button-row"><button id="test-media" class="btn btn-secondary ios-pressable" data-i18n="options_testMedia">Test media pause</button><button id="resume-media" class="btn btn-secondary ios-pressable" data-i18n="options_resumeMedia">Resume paused media</button></div>
+              <p class="status" id="media-test-status"></p>
+              <!-- v1.1.26: what the pause reaches — the platforms palette. -->
+              <p class="hint" data-i18n="options_mediaPlatforms"></p>
+              <p class="hint" data-i18n="options_mediaResumeNote"></p>
+              <p class="note" data-i18n="options_mediaLimitation"></p>
+            </div>
+          </section>
+
+          <!-- ============================================================ Diagnostics -->
+          <section class="ios-section" id="section-diagnostics">
+            <h2 class="ios-section-title" data-i18n="options_sectionDiagnostics">Diagnostics</h2>
+
+            <div class="ios-group box-pad">
+              <p class="hint" data-i18n="diag_hint"></p>
+              <ul id="diag-list" class="diag-list"></ul>
+              <div class="button-row">
+                <button id="diag-copy" class="btn btn-secondary ios-pressable" data-i18n="diag_copy">Copy for support</button>
+                <button id="diag-clear" class="btn btn-danger ios-pressable" data-i18n="diag_clear">Clear log</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ============================================================ Advanced -->
+          <section class="ios-section" id="section-advanced">
+            <h2 class="ios-section-title" data-i18n="options_sectionAdvanced">Advanced</h2>
+
+            <div class="ios-group box-pad">
+              <div class="button-row wrap">
+                <button id="recalculate" class="btn btn-primary ios-pressable" data-i18n="options_recalculate">Recalculate now</button>
+                <button id="clear-cache" class="btn btn-secondary ios-pressable" data-i18n="options_clearCache">Clear cached data</button>
+                <button id="export" class="btn btn-secondary ios-pressable" data-i18n="options_export">Export settings</button>
+                <button id="import" class="btn btn-secondary ios-pressable" data-i18n="options_import">Import settings</button>
+                <button id="reset" class="btn btn-danger ios-pressable" data-i18n="options_reset">Reset to defaults</button>
+              </div>
+              <input type="file" id="import-file" accept="application/json,.json" hidden />
+            </div>
+          </section>
+
+          <!-- ============================================================ About (v1.0.7; logo treatment v1.0.7) -->
+          <section class="ios-section" id="section-about">
+            <h2 class="ios-section-title" data-i18n="options_sectionAbout">About</h2>
+
+            <div class="ios-group about-card box-pad">
+              <div class="about-head">
+                <img src="../logo/logo.png" alt="" class="about-logo" width="84" height="59" />
+                <div class="about-title">
+                  <span class="about-name">Tcalm</span>
+                  <span class="version-badge" id="version-badge">v1.1.26</span>
+                </div>
+              </div>
+              <p data-i18n="about_intro"></p>
+              <p data-i18n="about_credit"></p>
+              <p class="about-link-row">
+                <a
+                  href="https://github.com/abod8639/Tcalm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-i18n="about_link_label"
+                  >Original project on GitHub</a
+                >
+              </p>
+              <p data-i18n="about_author"></p>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!--
+      Build identification moved to the About card (v1.0.7): options.js
+      stamps the real manifest version into #version-badge above. The static
+      text is only a fallback for the boot-warning-guarded no-JS case.
+    -->
+
+    <script src="options.js"></script>
+  </body>
+</html>

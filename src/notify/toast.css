@@ -1,0 +1,153 @@
+/* Toast alert window — Tcalm Firefox Extension (v1.1.17).
+ *
+ * Same design tokens as the popup/options pages so the toast reads as
+ * part of the product. The window is a chromeless popup (type: popup);
+ * this stylesheet makes it look like a desktop toast.
+ */
+
+:root,
+:root[data-theme='light'] {
+  --bg: #ffffff;
+  --text: #1c2030;
+  --muted: #64708a;
+  --accent: #4f46e5;
+  --accent-contrast: #ffffff;
+  --border: #dfe3ee;
+  --shadow: 0 12px 32px rgba(15, 20, 40, 0.22);
+}
+
+:root[data-theme='dark'] {
+  --bg: #171b26;
+  --text: #e7eaf3;
+  --muted: #98a2b8;
+  --accent: #8b93ff;
+  --accent-contrast: #101223;
+  --border: #262c3d;
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='system'] {
+    --bg: #171b26;
+    --text: #e7eaf3;
+    --muted: #98a2b8;
+    --accent: #8b93ff;
+    --accent-contrast: #101223;
+    --border: #262c3d;
+    --shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body.toast {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.45 system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Arabic',
+    sans-serif;
+  border: 1px solid var(--border);
+  padding: 16px 44px 22px 18px;
+  cursor: pointer; /* the whole toast is click-to-dismiss */
+  user-select: none;
+}
+
+[dir='rtl'] body.toast {
+  padding: 16px 18px 22px 44px;
+}
+
+.toast-logo {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.toast-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.toast-title {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.3;
+  overflow-wrap: break-word;
+}
+
+.toast-time {
+  margin-top: 2px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.15;
+}
+
+.toast-body {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.4;
+  overflow-wrap: break-word;
+}
+
+.toast-close {
+  position: absolute;
+  inset-inline-end: 6px;
+  top: 4px;
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font: 16px/1 system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.toast-close:hover,
+.toast-close:focus-visible {
+  background: var(--border);
+  color: var(--text);
+}
+
+.toast-progress {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--border);
+}
+
+.toast-progress-bar {
+  height: 100%;
+  width: 100%;
+  background: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .toast-progress-bar {
+    animation: toast-countdown linear forwards;
+  }
+}
+
+@keyframes toast-countdown {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}

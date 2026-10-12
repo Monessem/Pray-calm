@@ -1,0 +1,743 @@
+/* Onboarding page styles — Tcalm Firefox Extension (v1.1.26).
+   First-install landing page: the 3-step guided wizard (welcome →
+   location → permissions). Standalone and deliberately lean (~15 KB
+   lighter than importing options.css) — cards, one list per step, a
+   handful of buttons. Same iOS 18 design tokens as the options page so
+   the two pages feel like one product. */
+
+/* ---------------------------------------------------------- 1. Tokens */
+
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+  scrollbar-color: #c8c8cd transparent;
+  --bg: #f2f2f7;
+  --card: rgba(255, 255, 255, 0.82);
+  --card-border: rgba(0, 0, 0, 0.06);
+  --text: #1c1c1e;
+  --text-2: #8e8e93;
+  --hint: #6d6d73;
+
+  --accent: #4f46e5;
+  --accent-contrast: #ffffff;
+  --accent-glow: rgba(79, 70, 229, 0.25);
+
+  --fill-soft: rgba(120, 120, 128, 0.08);
+  --hair: rgba(0, 0, 0, 0.09);
+
+  --ok: #248a3d;
+  --warn: #b45309;
+  --warn-soft: rgba(255, 159, 10, 0.13);
+
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.06);
+  --ambient-1: rgba(79, 70, 229, 0.09);
+  --ambient-2: rgba(0, 199, 190, 0.06);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  scrollbar-color: #3a3a3f transparent;
+  --bg: #09090b;
+  --card: rgba(28, 28, 30, 0.9);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --text: #f5f5f7;
+  --text-2: #98989e;
+  --hint: #a6a6ad;
+
+  --accent: #8b93ff;
+  --accent-contrast: #101223;
+  --accent-glow: rgba(139, 147, 255, 0.28);
+
+  --fill-soft: rgba(120, 120, 128, 0.18);
+  --hair: rgba(255, 255, 255, 0.11);
+
+  --ok: #30d158;
+  --warn: #ffb648;
+  --warn-soft: rgba(255, 159, 10, 0.15);
+
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --ambient-1: rgba(139, 147, 255, 0.09);
+  --ambient-2: rgba(0, 199, 190, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='system'] {
+    color-scheme: dark;
+    scrollbar-color: #3a3a3f transparent;
+    --bg: #09090b;
+    --card: rgba(28, 28, 30, 0.9);
+    --card-border: rgba(255, 255, 255, 0.12);
+    --text: #f5f5f7;
+    --text-2: #98989e;
+    --hint: #a6a6ad;
+    --accent: #8b93ff;
+    --accent-contrast: #101223;
+    --accent-glow: rgba(139, 147, 255, 0.28);
+    --fill-soft: rgba(120, 120, 128, 0.18);
+    --hair: rgba(255, 255, 255, 0.11);
+    --ok: #30d158;
+    --warn: #ffb648;
+    --warn-soft: rgba(255, 159, 10, 0.15);
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --ambient-1: rgba(139, 147, 255, 0.09);
+    --ambient-2: rgba(0, 199, 190, 0.05);
+  }
+}
+
+/* ---------------------------------------------------------- 2. Base */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Text', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(720px 400px at 12% -12%, var(--ambient-1), transparent 60%),
+    radial-gradient(700px 380px at 88% -12%, var(--ambient-2), transparent 60%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* iOS 18 ambient selection tint. */
+::selection {
+  background: var(--accent-glow);
+}
+
+/* iOS 18 spring press effect. */
+.ios-pressable {
+  transition:
+    transform 0.16s cubic-bezier(0.2, 0.9, 0.4, 1.1),
+    opacity 0.15s;
+}
+
+.ios-pressable:active {
+  transform: scale(0.96);
+  opacity: 0.88;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ---------------------------------------------------------- 3. Boot warning */
+
+.boot-warning {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 14px auto 0;
+  max-width: 620px;
+  padding: 14px 16px;
+  border: 1px solid rgba(199, 152, 9, 0.4);
+  border-radius: 16px;
+  background: #fff9e3;
+  color: #6b4e00;
+  font-size: 13.5px;
+  line-height: 1.6;
+  box-shadow: var(--shadow-card);
+}
+
+:root[data-theme='dark'] .boot-warning {
+  background: rgba(255, 204, 0, 0.1);
+  color: #ffd970;
+  border-color: rgba(255, 204, 0, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='system'] .boot-warning {
+    background: rgba(255, 204, 0, 0.1);
+    color: #ffd970;
+    border-color: rgba(255, 204, 0, 0.25);
+  }
+}
+
+.boot-warning[hidden] {
+  display: none;
+}
+
+.boot-warning code {
+  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  background: rgba(127, 96, 0, 0.14);
+  padding: 1px 5px;
+  border-radius: 5px;
+}
+
+.boot-error-detail {
+  font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  direction: ltr;
+  text-align: left;
+  word-break: break-all;
+}
+
+.boot-error-detail[hidden] {
+  display: none;
+}
+
+/* ---------------------------------------------------------- 4. Shell + hero */
+
+.onb-shell {
+  max-inline-size: 620px;
+  margin: 0 auto;
+  padding: 32px 20px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.onb-hero {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.onb-logo {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.18));
+}
+
+.onb-hero h1 {
+  margin: 10px 0 4px;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+}
+
+.onb-tagline {
+  margin: 0 0 10px;
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.onb-intro {
+  margin: 0 auto;
+  max-inline-size: 46ch;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--hint);
+}
+
+/* ---------------------------------------------------------- 5. Step wizard (v1.1.26) */
+
+/* Progress landmark: three labeled dots. The dots are NOT buttons — the
+   Back/Continue pair is the single navigation path (one clean tab order). */
+.onb-steps {
+  margin: 0 auto;
+}
+
+.onb-stepdots {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin: 0;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-card);
+}
+
+.onb-dot {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-2);
+}
+
+.onb-dot .dot {
+  inline-size: 9px;
+  block-size: 9px;
+  border-radius: 50%;
+  background: var(--fill-soft);
+  box-shadow: inset 0 0 0 1.5px var(--text-2);
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.onb-dot-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.onb-dot[aria-current='step'] {
+  color: var(--accent);
+}
+
+.onb-dot[aria-current='step'] .dot {
+  background: var(--accent);
+  box-shadow: inset 0 0 0 1.5px var(--accent);
+  transform: scale(1.18);
+}
+
+.onb-dot[aria-current='step'] ~ .onb-dot .dot {
+  /* not-yet-reached steps get a hollow marker */
+  background: transparent;
+}
+
+/* Each step is a plain section — [hidden] keeps working because no
+   display property is set here. */
+.onb-step {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.onb-step[hidden] {
+  display: none;
+}
+
+/* ---------------------------------------------------------- 6. Cards + feature rows */
+
+.onb-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+  padding: 18px 18px 20px;
+}
+
+.onb-card h2 {
+  margin: 0 0 2px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.onb-perms-intro {
+  margin: 0 0 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+.onb-perms {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.onb-perm {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 4px;
+  border-top: 1px solid var(--hair);
+}
+
+.onb-perm:first-child {
+  border-top: none;
+}
+
+.onb-perm-icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 34px;
+  block-size: 34px;
+  border-radius: 10px;
+  background: var(--fill-soft);
+  color: var(--text-2);
+}
+
+.onb-perm-icon svg {
+  inline-size: 19px;
+  block-size: 19px;
+}
+
+.onb-perm-icon.t-green {
+  background: rgba(36, 138, 61, 0.13);
+  color: #248a3d;
+}
+
+.onb-perm-icon.t-indigo {
+  background: rgba(79, 70, 229, 0.12);
+  color: #4f46e5;
+}
+
+.onb-perm-icon.t-teal {
+  background: rgba(0, 160, 150, 0.12);
+  color: #00a096;
+}
+
+:root[data-theme='dark'] .onb-perm-icon.t-green,
+:root[data-theme='dark'] .onb-perm-icon.t-indigo,
+:root[data-theme='dark'] .onb-perm-icon.t-teal {
+  background: rgba(139, 147, 255, 0.14);
+  color: #a5abff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='system'] .onb-perm-icon.t-green,
+  :root[data-theme='system'] .onb-perm-icon.t-indigo,
+  :root[data-theme='system'] .onb-perm-icon.t-teal {
+    background: rgba(139, 147, 255, 0.14);
+    color: #a5abff;
+  }
+}
+
+.onb-perm-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-inline-size: 0;
+}
+
+.onb-perm-label {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.onb-perm-note {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--hint);
+}
+
+/* Feature rows on step 1 share the permission-row anatomy. */
+.onb-feats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.onb-feat {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 4px;
+  border-top: 1px solid var(--hair);
+}
+
+.onb-feat:first-child {
+  border-top: none;
+}
+
+/* ---------------------------------------------------------- 7. Platform chips (v1.1.26) */
+
+.onb-platforms h2 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.onb-chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.onb-chip {
+  padding: 6px 13px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: var(--fill-soft);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--hair);
+}
+
+.onb-chip:last-child {
+  color: var(--accent);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--accent-glow);
+}
+
+.onb-platforms-note {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--hint);
+}
+
+/* ---------------------------------------------------------- 8. Location fields (v1.1.26) */
+
+.onb-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.onb-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.onb-field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.onb-select {
+  appearance: none;
+  inline-size: 100%;
+  padding: 11px 38px 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--hair);
+  background: var(--fill-soft);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14.5px;
+  line-height: 1.3;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5 11 1.5' fill='none' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+[dir='rtl'] .onb-select {
+  padding: 11px 14px 11px 38px;
+  background-position: left 14px center;
+}
+
+.onb-select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------- 9. Actions */
+
+/* Granted / revoked feedback line. */
+.onb-verdict {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+  background: var(--fill-soft);
+  color: var(--hint);
+}
+
+.onb-verdict[hidden] {
+  display: none;
+}
+
+.onb-verdict.ok {
+  background: rgba(36, 138, 61, 0.1);
+  color: var(--ok);
+}
+
+.onb-verdict.warn {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+:root[data-theme='dark'] .onb-verdict.ok {
+  background: rgba(48, 209, 88, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='system'] .onb-verdict.ok {
+    background: rgba(48, 209, 88, 0.12);
+  }
+}
+
+/* ---------------------------------------------------------- 6. Actions */
+
+.onb-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  justify-content: center;
+}
+
+button {
+  font-family: inherit;
+}
+
+.onb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: none;
+  border-radius: 999px;
+  padding: 11px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.onb-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.onb-btn.primary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  box-shadow: 0 6px 20px var(--accent-glow);
+}
+
+.onb-btn.primary:hover {
+  filter: brightness(1.07);
+}
+
+.onb-btn.primary[disabled] {
+  cursor: default;
+  filter: none;
+  opacity: 0.55;
+}
+
+.onb-btn.secondary {
+  background: var(--fill-soft);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--hair);
+}
+
+.onb-btn.secondary:hover {
+  filter: brightness(1.04);
+}
+
+.onb-btn.ghost {
+  background: transparent;
+  color: var(--text-2);
+  padding-inline: 14px;
+}
+
+.onb-btn.ghost:hover {
+  color: var(--text);
+}
+
+/* ---------------------------------------------------------- 10. Privacy line */
+
+.onb-privacy {
+  margin: 2px auto 0;
+  max-inline-size: 52ch;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+/* ---------------------------------------------------------- 11. Arabic typography */
+
+/* Same contract as options.css: no letter-spacing for Arabic script,
+   dedicated Arabic font stack, +0.5–1px optical size bump. */
+:lang(ar),
+:lang(ar) * {
+  letter-spacing: 0;
+}
+
+:lang(ar) body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Arabic', 'Segoe UI',
+    'Noto Sans Arabic', 'Noto Sans', 'Geeza Pro', Tahoma, sans-serif;
+  line-height: 1.7;
+}
+
+:lang(ar) .onb-hero h1 {
+  font-size: 25px;
+  line-height: 1.5;
+}
+
+:lang(ar) .onb-tagline,
+[dir='rtl'] .onb-tagline {
+  font-size: 15.5px;
+  line-height: 1.6;
+}
+
+:lang(ar) .onb-intro,
+:lang(ar) .onb-perm-note,
+:lang(ar) .onb-perms-intro,
+:lang(ar) .onb-verdict,
+:lang(ar) .onb-privacy,
+[dir='rtl'] .onb-intro,
+[dir='rtl'] .onb-perm-note,
+[dir='rtl'] .onb-perms-intro,
+[dir='rtl'] .onb-verdict,
+[dir='rtl'] .onb-privacy {
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+
+:lang(ar) .onb-perm-label,
+[dir='rtl'] .onb-perm-label {
+  font-size: 15.5px;
+  line-height: 1.6;
+}
+
+:lang(ar) .onb-platforms-note,
+:lang(ar) .onb-platforms h2,
+:lang(ar) .onb-field-label,
+[dir='rtl'] .onb-platforms-note,
+[dir='rtl'] .onb-platforms h2,
+[dir='rtl'] .onb-field-label {
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+:lang(ar) .onb-chip {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+:lang(ar) .onb-card h2,
+[dir='rtl'] .onb-card h2 {
+  font-size: 16.5px;
+}
+
+/* ---------------------------------------------------------- 12. Mobile */
+
+@media (max-width: 480px) {
+  .onb-shell {
+    padding: 24px 14px 40px;
+  }
+
+  .onb-stepdots {
+    gap: 14px;
+    padding: 8px 14px;
+  }
+
+  .onb-dot-label {
+    display: none; /* dots only on narrow screens */
+  }
+
+  .onb-actions {
+    flex-direction: column;
+  }
+
+  .onb-btn {
+    inline-size: 100%;
+  }
+
+  .onb-select {
+    font-size: 16px; /* Firefox mobile: no zoom-on-focus below 16px */
+  }
+}

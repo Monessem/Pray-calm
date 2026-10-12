@@ -1,0 +1,155 @@
+<!doctype html>
+<!-- Tcalm E2E media fixture — the main (parent) page.
+
+     Hosts every hard case the v1.1.23+ media hook must handle:
+       1. an in-DOM <audio>            (#indom)
+       2. a DETACHED <audio>           (new Audio(...) — the SoundCloud case)
+       3. an audio inside an open shadow root
+       4. a running Web Audio context  (oscillator, near-silent)
+       5. a cross-origin <iframe>      (served from 127.0.0.1:8138)
+     A single trusted click ("Start all") unlocks the autoplay policy for
+     everything on this page; the iframe is started via postMessage.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tcalm E2E media fixture</title>
+<style>
+  body { font: 14px/1.5 monospace; margin: 2em; background: #111; color: #eee; }
+  button { font: inherit; padding: 8px 16px; }
+  pre { background: #000; padding: 12px; border-radius: 6px; min-height: 3em; }
+</style>
+</head>
+<body>
+<h1>Tcalm E2E media fixture</h1>
+<p>
+  <button id="start-all" type="button">Start all</button>
+  <span id="hint">— press once; every player below should start.</span>
+</p>
+<ul>
+  <li>in-DOM audio: <span id="s-indom">idle</span></li>
+  <li>detached audio (SoundCloud case): <span id="s-detached">idle</span></li>
+  <li>shadow-DOM audio: <span id="s-shadow">idle</span></li>
+  <li>web audio context: <span id="s-ctx">none</span></li>
+  <li>page-world hook visible: <span id="s-hook">absent</span></li>
+  <li>stubborn auto-resume player (v1.1.26 case): <span id="s-stubborn">idle</span></li>
+</ul>
+<audio id="indom" src="chime.ogg" loop></audio>
+<div id="shadow-host"></div>
+<iframe id="xorigin" src="http://127.0.0.1:8138/iframe.html" width="360" height="90"
+        style="border:1px solid #444"></iframe>
+<pre id="state">idle</pre>
+<script>
+  // The detached player: never appended to the DOM, exactly like
+  // SoundCloud keeps its element out of the document tree.
+  const detached = new Audio('chime.ogg');
+  detached.loop = true;
+
+  // v1.1.26 case — the STUBBORN player: realistic "keep playing" logic.
+  // After an external pause it retries play() up to twice (100 ms each —
+  // the recovery cadence of live-radio / ad-pipeline players; an infinite
+  // loop would also ignore the site's OWN pause button, which no real
+  // player does). The budget re-arms only after playback has been STABLE
+  // for a second, so the watch's back-to-back re-pauses correctly drain
+  // it: 2 recovery attempts, then the player gives up and syncs to
+  // paused. The hook's anti-auto-resume watch (re-checks at +200 ms /
+  // +500 ms) must outlast both retries and leave it paused.
+  const stubborn = new Audio('chime.ogg');
+  stubborn.loop = true;
+  let stubbornRetries = 0;
+  let stubbornRearm = 0;
+  stubborn.addEventListener('play', () => {
+    if (stubbornRearm) window.clearTimeout(stubbornRearm);
+    stubbornRearm = window.setTimeout(() => { stubbornRetries = 0; }, 1000);
+  });
+  stubborn.addEventListener('pause', () => {
+    if (stubbornRetries >= 2) return; // gave up — UI syncs to paused
+    stubbornRetries += 1;
+    window.setTimeout(() => {
+      stubborn.play().catch(() => {});
+    }, 100);
+  });
+
+  // A media element inside an open shadow root.
+  const shadowHost = document.getElementById('shadow-host');
+  const shadowRoot = shadowHost.attachShadow({ mode: 'open' });
+  shadowRoot.innerHTML = '<audio src="chime.ogg" loop></audio>';
+  const shadowAudio = shadowRoot.querySelector('audio');
+
+  let audioCtx = null;
+
+  const el = (id) => document.getElementById(id);
+
+  // E2E instrumentation (v1.1.24): count how often the page-world hook's
+  // pause() ran in THIS page — ground truth for targeting assertions.
+  let tcalmPauseCalls = 0;
+  let tcalmPauseSeenRestorable = null;
+  window.setInterval(() => {
+    const api = window.__tcalmMedia;
+    if (api && !api.__tcalmCounted && typeof api.pause === 'function') {
+      api.__tcalmCounted = true;
+      const orig = api.pause.bind(api);
+      api.pause = (opts) => {
+        tcalmPauseCalls += 1;
+        tcalmPauseSeenRestorable = opts && opts.restorable;
+        try { window.__tcalmLastPauseStack = String(new Error().stack).slice(0, 400); } catch (e) {}
+        return orig(opts);
+      };
+    }
+  }, 200);
+
+  function report() {
+    return JSON.stringify({
+      indom: !el('indom').paused,
+      detached: !detached.paused,
+      shadow: !shadowAudio.paused,
+      stubborn: !stubborn.paused,
+      ctx: audioCtx ? audioCtx.state : 'none',
+      // The hook exposes itself in the page world — proof that the static
+      // manifest registration (or a late injection) reached us.
+      hook: typeof window.__tcalmMedia === 'object' && window.__tcalmMedia !== null,
+      ms: (navigator.mediaSession && navigator.mediaSession.playbackState) || 'none',
+      title: document.title,
+      tcalmPauseCalls,
+      tcalmPauseRestorable: tcalmPauseSeenRestorable,
+      tcalmPauseStack: window.__tcalmLastPauseStack || null,
+    });
+  }
+  window.__report = report;
+
+  function paint() {
+    const r = JSON.parse(report());
+    el('s-indom').textContent = r.indom ? 'PLAYING' : 'paused';
+    el('s-detached').textContent = r.detached ? 'PLAYING' : 'paused';
+    el('s-shadow').textContent = r.shadow ? 'PLAYING' : 'paused';
+    el('s-stubborn').textContent = r.stubborn ? 'PLAYING (watch lost)' : 'paused (watch won)';
+    el('s-ctx').textContent = r.ctx;
+    el('s-hook').textContent = r.hook ? 'present' : 'absent';
+    el('state').textContent = report();
+  }
+  window.setInterval(paint, 250);
+  paint();
+
+  el('start-all').addEventListener('click', async () => {
+    el('hint').textContent = 'started';
+    await el('indom').play().catch(() => {});
+    await detached.play().catch(() => {});
+    await shadowAudio.play().catch(() => {});
+    await stubborn.play().catch(() => {});
+    try {
+      audioCtx = new AudioContext();
+      try { await audioCtx.resume(); } catch (e) {}
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      gain.gain.value = 0.001; // near-silent: audible to the policy, quiet to the room
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start();
+    } catch (err) {
+      audioCtx = { state: 'failed: ' + err };
+    }
+    el('xorigin').contentWindow.postMessage('start', '*');
+    paint();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,821 @@
+/* Popup styles — Tcalm Firefox Extension.
+   Light/dark themes via [data-theme]; RTL via logical properties.
+   v1.0.5: per-prayer visual themes (each prayer owns a gradient, icon color
+   and animation), live progress bar, fixed switch geometry, green/red
+   status capsule, and unified row typography.
+   v1.0.6: hold banner + version footer removed (leaner panel); icon buttons
+   resized to 36px so the stroke gear and the switch sit on one optical line.
+   v1.0.7: header shows the official logo artwork directly (transparent,
+   natural aspect) — no icon background plate anymore. */
+
+/* ------------------------------------------------------------ design tokens */
+
+:root,
+:root[data-theme='light'] {
+  --bg: #f5f6fa;
+  --card: #ffffff;
+  --card-soft: #eef0f7;
+  --text: #1c2030;
+  --muted: #64708a;
+  --accent: #4f46e5;
+  --accent-contrast: #ffffff;
+  --accent-soft: #e6e4ff;
+  --border: #dfe3ee;
+  --shadow: 0 10px 30px rgba(28, 32, 48, 0.08);
+  --passed: #a4abbd;
+  --banner-bg: #fff7e0;
+  --banner-text: #7a5b00;
+  /* status capsule: green = running, red = paused */
+  --ok-fg: #15803d;
+  --ok-bg: color-mix(in srgb, #16a34a 14%, transparent);
+  --danger-fg: #b91c1c;
+  --danger-bg: color-mix(in srgb, #dc2626 10%, transparent);
+  /* per-prayer accent colors (rows, icons, next-row tint) */
+  --p-fajr: #4f46e5;
+  --p-sunrise: #b45309;
+  --p-dhuhr: #0284c7;
+  --p-asr: #a16207;
+  --p-maghrib: #be185d;
+  --p-isha: #4338ca;
+}
+
+:root[data-theme='dark'] {
+  --bg: #0e1118;
+  --card: #171b26;
+  --card-soft: #1f2433;
+  --text: #e7eaf3;
+  --muted: #98a2b8;
+  --accent: #8b93ff;
+  --accent-contrast: #101223;
+  --accent-soft: #2a2f4a;
+  --border: #262c3d;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --passed: #5b6478;
+  --banner-bg: #3a3313;
+  --banner-text: #ffd970;
+  --ok-fg: #4ade80;
+  --ok-bg: color-mix(in srgb, #22c55e 16%, transparent);
+  --danger-fg: #f87171;
+  --danger-bg: color-mix(in srgb, #ef4444 14%, transparent);
+  --p-fajr: #a5b4fc;
+  --p-sunrise: #fbbf24;
+  --p-dhuhr: #7dd3fc;
+  --p-asr: #facc15;
+  --p-maghrib: #f9a8d4;
+  --p-isha: #c7d2fe;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme='system'] {
+    --bg: #0e1118;
+    --card: #171b26;
+    --card-soft: #1f2433;
+    --text: #e7eaf3;
+    --muted: #98a2b8;
+    --accent: #8b93ff;
+    --accent-contrast: #101223;
+    --accent-soft: #2a2f4a;
+    --border: #262c3d;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    --passed: #5b6478;
+    --banner-bg: #3a3313;
+    --banner-text: #ffd970;
+    --ok-fg: #4ade80;
+    --ok-bg: color-mix(in srgb, #22c55e 16%, transparent);
+    --danger-fg: #f87171;
+    --danger-bg: color-mix(in srgb, #ef4444 14%, transparent);
+    --p-fajr: #a5b4fc;
+    --p-sunrise: #fbbf24;
+    --p-dhuhr: #7dd3fc;
+    --p-asr: #facc15;
+    --p-maghrib: #f9a8d4;
+    --p-isha: #c7d2fe;
+  }
+}
+
+/* prayer name -> accent variable (same mapping for every theme) */
+.prayer-row[data-prayer='fajr'] {
+  --p: var(--p-fajr);
+}
+.prayer-row[data-prayer='sunrise'] {
+  --p: var(--p-sunrise);
+}
+.prayer-row[data-prayer='dhuhr'] {
+  --p: var(--p-dhuhr);
+}
+.prayer-row[data-prayer='asr'] {
+  --p: var(--p-asr);
+}
+.prayer-row[data-prayer='maghrib'] {
+  --p: var(--p-maghrib);
+}
+.prayer-row[data-prayer='isha'] {
+  --p: var(--p-isha);
+}
+
+/* ------------------------------------------------------------------- base */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * v1.0.4 — panel sizing: the body keeps a FIXED pixel width.
+ * NEVER reintroduce viewport-relative width units here: in a popup panel
+ * they resolve against the PANEL's own current size. Firefox first measures
+ * the document mid-load (before CSS applies) and clamps the panel to ~32px;
+ * a viewport-relative max-width then locks the body to that 32px forever
+ * (fixpoint trap), so the popup renders as a hairline strip that users
+ * perceive as "the popup does not open". Fixed pixels escape the trap
+ * because they do not depend on the measured viewport.
+ */
+body {
+  width: 372px;
+  min-height: 480px;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.45 system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Arabic',
+    sans-serif;
+}
+
+main {
+  padding: 14px 14px 16px;
+  animation: rise 0.18s ease-out both;
+}
+
+/* ---------------------------------------------------------------- header */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.brand-icon {
+  /* v1.0.7: the official logo is transparent artwork now — a soft
+     shadow keeps it crisp on light headers without any background
+     plate (the old blue squircle is gone for good). */
+  flex: none;
+  filter: drop-shadow(0 1px 1.5px rgba(28, 32, 48, 0.35));
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.2px;
+}
+
+/* Status capsule: green dot capsule when active, red when paused. */
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2.5px 9px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.status-chip::before {
+  content: '';
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-chip.on {
+  background: var(--ok-bg);
+  color: var(--ok-fg);
+}
+
+.status-chip.on::before {
+  animation: chip-pulse 2.4s ease-in-out infinite;
+}
+
+.status-chip.off {
+  background: var(--danger-bg);
+  color: var(--danger-fg);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  background: var(--card-soft);
+  color: var(--text);
+}
+
+.icon-button:active {
+  transform: scale(0.94);
+}
+
+.icon-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/*
+ * Switch. v1.0.5 geometry fix: the track used to be WIDER (40px) than its
+ * own 34px button, overflowing it and looking misaligned next to the gear.
+ * The track (38px) now provably fits inside the button's content box.
+ * v1.0.6: the track keeps 38px while its button grows to 46x30 so both
+ * header controls share the same 36px hit-target rhythm.
+ */
+.switch-button {
+  width: 46px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card-soft);
+}
+
+.switch-button:hover {
+  border-color: var(--accent);
+}
+
+.switch-track {
+  display: inline-block;
+  width: 38px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--border);
+  position: relative;
+  transition: background 0.18s ease;
+}
+
+.switch-thumb {
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-start: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  transition: inset-inline-start 0.18s ease;
+}
+
+.switch-button[aria-checked='true'] {
+  border-color: transparent;
+}
+
+.switch-button[aria-checked='true'] .switch-track {
+  background: #16a34a;
+}
+
+.switch-button[aria-checked='true'] .switch-thumb {
+  inset-inline-start: 20px;
+}
+
+/* ------------------------------------------------- next-prayer themed card */
+
+/*
+ * The card's look follows the NEXT prayer: data-prayer="fajr" paints the
+ * pre-dawn indigo-rose gradient with faint stars, "isha" the deep night
+ * with a star field, "dhuhr" the midday azure sun halo, and so on. The
+ * countdown and progress bar tick every second, so the card stays in sync
+ * with the actual prayer time.
+ */
+.next-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--next-grad);
+  color: #ffffff;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  --next-grad: linear-gradient(135deg, #312e81, #4f46e5 55%, #6d5ae0);
+}
+
+.next-card[data-prayer='fajr'] {
+  --next-grad: linear-gradient(135deg, #1e1b4b, #4c1d95 45%, #9d174d);
+}
+
+.next-card[data-prayer='dhuhr'] {
+  --next-grad: linear-gradient(135deg, #0c4a6e, #0369a1 55%, #0284c7);
+}
+
+.next-card[data-prayer='asr'] {
+  --next-grad: linear-gradient(135deg, #5c3410, #8a5208 55%, #b45309);
+}
+
+.next-card[data-prayer='maghrib'] {
+  --next-grad: linear-gradient(135deg, #581c87, #9d174d 45%, #c2410c);
+}
+
+.next-card[data-prayer='isha'] {
+  --next-grad: linear-gradient(135deg, #0f172a, #1e1b4b 55%, #312e81);
+}
+
+/* Decorative layer (halo / stars / sweep) behind the text. */
+.card-art {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.card-art::before {
+  content: '';
+  position: absolute;
+  inset-inline-end: -70px;
+  inset-block-start: -70px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 62%);
+  animation: halo 7s ease-in-out infinite;
+}
+
+/* fajr — rose glow rising at the horizon + last fading stars */
+.next-card[data-prayer='fajr'] .card-art::before {
+  inset-inline-end: -60px;
+  inset-block-start: auto;
+  inset-block-end: -110px;
+  width: 240px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 65% 100%,
+    rgba(244, 114, 182, 0.5) 0%,
+    rgba(244, 114, 182, 0) 60%
+  );
+  animation-duration: 8s;
+}
+
+.next-card[data-prayer='fajr'] .card-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1.5px 1.5px at 82% 26%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 90% 40%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 70% 18%, #fff 50%, transparent 51%);
+  animation: twinkle 5s ease-in-out infinite;
+}
+
+/* dhuhr — sun directly overhead, wide pulsing halo */
+.next-card[data-prayer='dhuhr'] .card-art::before {
+  inset-inline-end: auto;
+  inset-inline-start: 50%;
+  margin-inline-start: -100px;
+  inset-block-start: -110px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0) 60%);
+  animation-duration: 5s;
+}
+
+/* asr — warm low sun + a slow light sweep */
+.next-card[data-prayer='asr'] .card-art::before {
+  inset-inline-end: -50px;
+  inset-block-start: -60px;
+  width: 170px;
+  height: 170px;
+  background: radial-gradient(circle, rgba(253, 224, 71, 0.4) 0%, rgba(253, 224, 71, 0) 62%);
+  animation-duration: 6s;
+}
+
+.next-card[data-prayer='asr'] .card-art::after {
+  content: '';
+  position: absolute;
+  inset: -30%;
+  background: linear-gradient(115deg, transparent 44%, rgba(255, 255, 255, 0.14) 50%, transparent 56%);
+  animation: sweep 7s ease-in-out infinite;
+}
+
+/* maghrib — the sun touching the horizon, breathing ember glow */
+.next-card[data-prayer='maghrib'] .card-art::before {
+  inset-inline-end: 24px;
+  inset-block-start: auto;
+  inset-block-end: -80px;
+  width: 130px;
+  height: 130px;
+  background: radial-gradient(circle, rgba(251, 146, 60, 0.55) 0%, rgba(251, 146, 60, 0) 62%);
+  animation-duration: 9s;
+}
+
+/* isha — cool moonlight halo + a star field */
+.next-card[data-prayer='isha'] .card-art::before {
+  inset-inline-end: -40px;
+  inset-block-start: -50px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(165, 180, 252, 0.35) 0%, rgba(165, 180, 252, 0) 62%);
+  animation-duration: 8s;
+}
+
+.next-card[data-prayer='isha'] .card-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1.5px 1.5px at 80% 24%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 92% 36%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 72% 44%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 85% 58%, #fff 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 64% 30%, #fff 50%, transparent 51%);
+  animation: twinkle 4.5s ease-in-out infinite;
+}
+
+/* Large watermark of the current prayer's icon (injected by popup.js). */
+.card-icon {
+  position: absolute;
+  inset-inline-end: 14px;
+  inset-block-start: 12px;
+  display: flex;
+  color: rgba(255, 255, 255, 0.22);
+}
+
+.card-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.next-body {
+  position: relative;
+  padding: 17px 20px 16px;
+}
+
+.next-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  opacity: 0.82;
+}
+
+.next-name {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-block: 3px 7px;
+}
+
+.next-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.next-time {
+  font-size: 23px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.next-countdown {
+  font-size: 13.5px;
+  font-weight: 600;
+  opacity: 0.95;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Progress from the previous prayer to the next one (updates every second). */
+.next-progress {
+  margin-block-start: 13px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+}
+
+.next-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.95);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.6s linear;
+}
+
+[dir='rtl'] .next-progress-fill {
+  transform-origin: right center;
+}
+
+/* ------------------------------------------------------------- meta card */
+
+.meta-card {
+  margin-block-start: 12px;
+  padding: 12px 16px 13px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.meta-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.meta-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.meta-line {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.meta-line.muted {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.meta-line.mono {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.3px;
+  padding-block-start: 1px;
+}
+
+.meta-line.location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-block-start: 8px;
+  font-size: 12.5px;
+  min-width: 0;
+}
+
+.meta-line.location span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pin {
+  flex: none;
+  opacity: 0.8;
+}
+
+/* -------------------------------------------------------------- timetable */
+
+.timetable-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin: 14px 4px 6px;
+}
+
+.timetable-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.prayer-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.prayer-row:last-child {
+  border-bottom: none;
+}
+
+/* Per-prayer glyph (injected by popup.js), colored by the prayer theme. */
+.prayer-icon {
+  display: inline-flex;
+  flex: none;
+  width: 17px;
+  height: 17px;
+  color: var(--p, var(--muted));
+}
+
+.prayer-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/*
+ * v1.0.5 typography fix: the sunrise (secondary) row used to render at a
+ * smaller size (12.5px) and lighter weight than its siblings, reading as a
+ * different font inside the same list. It now uses the SAME size and weight
+ * as every other row — only the muted color distinguishes it.
+ */
+.prayer-row .prayer-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.prayer-row .prayer-time {
+  margin-inline-start: auto;
+  font-weight: 700;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.prayer-row .prayer-status {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  min-inline-size: 56px;
+  text-align: end;
+}
+
+.prayer-row.secondary {
+  color: var(--muted);
+  padding-block: 6px;
+}
+
+.prayer-row.secondary .prayer-icon {
+  opacity: 0.75;
+}
+
+.prayer-row.passed {
+  color: var(--passed);
+}
+
+.prayer-row.passed .prayer-icon {
+  opacity: 0.55;
+}
+
+.prayer-row.passed .prayer-status {
+  color: var(--passed);
+}
+
+.prayer-row.next {
+  background: color-mix(in srgb, var(--p) 12%, var(--card));
+}
+
+.prayer-row.next::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 3px;
+  background: var(--p);
+}
+
+.prayer-row.next .prayer-name {
+  color: var(--p);
+  font-weight: 700;
+}
+
+.prayer-row.next .prayer-status {
+  color: var(--p);
+  font-weight: 700;
+}
+
+.prayer-row.unavailable {
+  color: var(--muted);
+}
+
+/* ----------------------------------------------- boot warning */
+
+.boot-warning {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 10px 12px 0;
+  padding: 10px 12px;
+  border: 1px solid #d9a700;
+  border-radius: 10px;
+  background: var(--banner-bg);
+  color: var(--banner-text);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+.boot-warning[hidden] {
+  display: none;
+}
+
+.boot-warning code {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  background: rgba(127, 96, 0, 0.15);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.boot-error-detail {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 11px;
+  direction: ltr;
+  text-align: left;
+  word-break: break-all;
+}
+
+/* -------------------------------------------------------------- motion */
+
+@keyframes halo {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+@keyframes sweep {
+  0%,
+  100% {
+    transform: translateX(-35%);
+  }
+  50% {
+    transform: translateX(35%);
+  }
+}
+
+@keyframes chip-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* Accessibility: all decorative motion stops when the user asks for it. */
+@media (prefers-reduced-motion: reduce) {
+  .card-art::before,
+  .card-art::after,
+  .next-progress-fill,
+  .status-chip.on::before,
+  .switch-track,
+  .switch-thumb,
+  main {
+    animation: none;
+    transition: none;
+  }
+}

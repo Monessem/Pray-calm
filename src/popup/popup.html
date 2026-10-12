@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="system">
+  <head>
+    <meta charset="utf-8" />
+    <!--
+      v1.0.4: no mobile viewport meta. In the popup panel context it can
+      interfere with Firefox's content-size measurement (see popup.css note
+      about the panel width trap); extension pages are desktop pages and never
+      needed it.
+    -->
+    <title>Tcalm</title>
+    <!-- v1.1.20: identity icon (tabs / history of the panel page). -->
+    <link rel="icon" type="image/png" sizes="48x48" href="../icons/icon-48.png" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <!--
+      Boot self-diagnosis: this box is VISIBLE until popup.js executes and
+      hides it. If the popup ever renders as a blank window, the user sees
+      an actionable bilingual message instead of "mysterious white box".
+      It happens when the extension SOURCE tree (no built JS) is loaded
+      via about:debugging instead of the packaged XPI.
+    -->
+    <div id="boot-warning" class="boot-warning" role="alert">
+      <div class="boot-warning-line">
+        <strong>⚠ Extension code did not start.</strong>
+        You are likely loading the source folder, which contains no built
+        JavaScript. Load the file <code>tcalm-v1.1.26.xpi</code>
+        via <code>about:debugging</code> → “Load Temporary Add-on…”.
+      </div>
+      <div class="boot-warning-line" dir="rtl" lang="ar">
+        <strong>⚠ لم يبدأ تشغيل الإضافة.</strong>
+        على الأغلب تم تحميل مجلد المصدر الذي لا يحتوي على الجافاسكريبت المُبنى.
+        افتح صفحة <code>about:debugging</code> ← اختر “Load Temporary Add-on…”
+        ثم حدّد ملف <code>tcalm-v1.1.26.xpi</code>.
+      </div>
+      <div class="boot-error-detail" id="boot-error-detail" hidden></div>
+    </div>
+
+    <header class="topbar">
+      <div class="brand">
+        <!--
+          v1.0.7: the owner's official logo (golden mosque) is shown AS-IS
+          at its natural 310:218 aspect. The icons/ folder no longer puts
+          the artwork on a colored base — the old indigo squircle read as
+          the retired blue logo peeking out from behind this one.
+        -->
+        <img src="../logo/logo.png" alt="" class="brand-icon" width="34" height="24" />
+        <span class="brand-name">Tcalm</span>
+        <span class="status-chip" id="status-chip" role="status">—</span>
+      </div>
+      <div class="actions">
+        <button
+          id="toggle-enabled"
+          class="icon-button switch-button"
+          role="switch"
+          aria-checked="true"
+          data-i18n-attr="aria-label:popup_toggleExtension"
+        >
+          <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+        </button>
+        <button
+          id="open-options"
+          class="icon-button"
+          data-i18n-attr="title:popup_openOptions,aria-label:popup_openOptions"
+        >
+          <!--
+            v1.0.7: the fill-based Material gear still read as a dense,
+            lopsided blob at 18px (the hub vs. outline optics). Replaced with
+            the canonical Lucide "settings" cog: stroke-based, perfectly
+            centered on (12,12) with an explicit hub circle — it stays crisp
+            and symmetric at every toolbar/popup size.
+          -->
+          <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+            ></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <!--
+        data-prayer is set by popup.js to the NEXT prayer (fajr/dhuhr/asr/
+        maghrib/isha): the card's gradient, decorative icon and animation
+        follow the prayer's own theme — dawn for Fajr, night for Isha, etc.
+        The progress bar fills in sync with the time remaining until the
+        prayer (previous prayer -> next prayer window).
+      -->
+      <section class="next-card" id="next-card" data-prayer="" aria-live="polite">
+        <div class="card-art" aria-hidden="true"><span class="card-icon" id="card-icon"></span></div>
+        <div class="next-body">
+          <div class="next-label" data-i18n="popup_nextPrayer">Next Prayer</div>
+          <div class="next-name" id="next-name">—</div>
+          <div class="next-row">
+            <div class="next-time" id="next-time">--:--</div>
+            <div class="next-countdown" id="next-countdown">—</div>
+          </div>
+          <div class="next-progress" aria-hidden="true">
+            <div class="next-progress-fill" id="next-progress"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="meta-card">
+        <div class="meta-row">
+          <div class="meta-main">
+            <div class="meta-line" id="date-line">—</div>
+            <div class="meta-line muted" id="hijri-line"></div>
+          </div>
+          <div class="meta-line muted mono" id="now-line">--:--</div>
+        </div>
+        <div class="meta-line muted location">
+          <svg
+            class="pin"
+            viewBox="0 0 24 24"
+            width="13"
+            height="13"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <span id="location-line">—</span>
+        </div>
+      </section>
+
+      <section class="timetable">
+        <h2 class="timetable-title" data-i18n="popup_todayPrayers">Today’s Prayers</h2>
+        <ul id="timetable-list" class="timetable-list"></ul>
+      </section>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
