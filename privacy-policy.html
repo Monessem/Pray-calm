@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tcalm — سياسة الخصوصية / Privacy Policy</title>
+    <meta name="description" content="Privacy policy for the Tcalm browser extension — prayer times with optional media pause. No data collection, everything stays on your device." />
+    <!--
+      ═══════════════════════════════════════════════════════════════════
+      Tcalm — GitHub Pages privacy policy (self-contained, single file)
+      ✏️ BEFORE PUBLISHING, REPLACE THESE TWO PLACEHOLDERS:
+         1) contact email:  Mo2nessem@gmail.com
+         2) GitHub link:    https://github.com/Monessem/Pray-calm
+         Everything else is ready to upload as-is (e.g. repo "privacy" →
+      ═══════════════════════════════════════════════════════════════════
+    -->
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f7f6f3;
+        --surface: #ffffff;
+        --fg: #1a1c20;
+        --muted: #565d69;
+        --line: #e4e1d8;
+        --accent: #1b7f4d;
+        --accent-soft: #e8f4ed;
+        --chip: #eef0f3;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f1115;
+          --surface: #161920;
+          --fg: #f0ede6;
+          --muted: #9aa0ab;
+          --line: #272b34;
+          --accent: #3aa56e;
+          --accent-soft: #14301f;
+          --chip: #1d212a;
+        }
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font: 16px/1.65 "Segoe UI", "Noto Sans Arabic", "Noto Sans", system-ui, -apple-system, sans-serif;
+      }
+      main {
+        max-width: 46rem;
+        margin: 0 auto;
+        padding: 2.5rem 1.25rem 5rem;
+      }
+      header.top {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-weight: 700;
+        font-size: 1.15rem;
+        letter-spacing: -0.01em;
+      }
+      .brand svg { flex: none; }
+      .badge {
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 0.15rem 0.55rem;
+        border-radius: 999px;
+        background: var(--chip);
+        color: var(--muted);
+        vertical-align: middle;
+      }
+      .lang-switch { display: flex; gap: 0.4rem; }
+      .lang-switch button {
+        font: inherit;
+        font-size: 0.85rem;
+        padding: 0.3rem 0.85rem;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--fg);
+        cursor: pointer;
+      }
+      .lang-switch button[aria-pressed="true"] {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.5rem 1.6rem;
+        margin: 1.25rem 0;
+      }
+      .tldr {
+        border-inline-start: 4px solid var(--accent);
+        background: var(--accent-soft);
+      }
+      .tldr p { margin: 0; font-weight: 600; }
+      h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin: 0.5rem 0 0.25rem;
+      }
+      .updated {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin: 0 0 1rem;
+      }
+      h2 {
+        font-size: 1.12rem;
+        font-weight: 700;
+        margin: 2rem 0 0.6rem;
+      }
+      h3 { font-size: 1rem; margin: 1.2rem 0 0.4rem; }
+      p, li { color: var(--muted); }
+      strong { color: var(--fg); }
+      ul { padding-inline-start: 1.4rem; }
+      li { margin: 0.3rem 0; }
+      li::marker { color: var(--accent); }
+      a { color: var(--accent); }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0.75rem 0;
+        font-size: 0.92rem;
+      }
+      th, td {
+        text-align: start;
+        padding: 0.55rem 0.7rem;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      th {
+        color: var(--fg);
+        font-weight: 700;
+        background: var(--chip);
+      }
+      td code, p code {
+        font: 0.86em/1.4 ui-monospace, "Cascadia Mono", Consolas, monospace;
+        background: var(--chip);
+        padding: 0.08rem 0.35rem;
+        border-radius: 5px;
+      }
+      .tag {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        padding: 0.12rem 0.5rem;
+        border-radius: 999px;
+        margin-inline-end: 0.35rem;
+      }
+      .tag.req { background: var(--accent-soft); color: var(--accent); }
+      .tag.opt { background: var(--chip); color: var(--muted); }
+      footer {
+        margin-top: 3rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      section[hidden] { display: none; }
+      @media (max-width: 34rem) {
+        table { font-size: 0.86rem; }
+        th, td { padding: 0.45rem 0.5rem; }
+      }
+      @media print {
+        .lang-switch { display: none; }
+        section[hidden] { display: block !important; }
+        body { background: #fff; color: #000; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header class="top">
+        <span class="brand">
+          <svg width="30" height="30" viewBox="0 0 48 48" role="img" aria-label="Tcalm" focusable="false">
+            <circle cx="24" cy="24" r="21" fill="none" stroke="#1b7f4d" stroke-width="4"/>
+            <path d="M24 10v14l9 6" fill="none" stroke="#1b7f4d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Tcalm <span class="badge">v1.1.28</span>
+        </span>
+        <nav class="lang-switch" aria-label="Language">
+          <button type="button" id="btn-ar" aria-pressed="true">العربية</button>
+          <button type="button" id="btn-en" aria-pressed="false">English</button>
+        </nav>
+      </header>
+
+      <!-- ══════════════════════ ARABIC ══════════════════════ -->
+      <section id="lang-ar" lang="ar" dir="rtl">
+        <h1>سياسة الخصوصية</h1>
+        <p class="updated">آخر تحديث: 13 أكتوبر 2026 — تنطبق على إضافة Tcalm الإصدار 1.1.28 وما بعده لمتصفح كروم والمتصفحات المبنية عليه (إيدج، أوبرا، بريف وغيرها).</p>
+
+        <div class="card tldr">
+          <p>Tcalm لا يجمع ولا يرسل ولا يبيع أي بيانات شخصية. كل الحسابات والإعدادات تبقى على جهازك داخل متصفحك، والإضافة تعمل دون اتصال بالإنترنت.</p>
+        </div>
+
+        <h2>نظرة عامة</h2>
+        <p>
+          Tcalm إضافة مجانية تعرض مواقيت الصلاة على جهازك، وتذكّرك بالإشعارات عند دخول الوقت،
+          ويمكنها — بشكل اختياري — إيقاف الوسائط المشغّلة في تبويبات المتصفح لحظة الأذان.
+          لا يوجد حساب مستخدمين، ولا تحليلات، ولا إعلانات، ولا أي خوادم تابعة لنا يتم إرسال بياناتك إليها.
+        </p>
+
+        <h2>البيانات التي تبقى على جهازك فقط</h2>
+        <p>تُحفَز البيانات التالية في التخزين المحلي للإضافة داخل متصفحك (<code>chrome.storage.local</code>) ولا تغادر جهازك إطلاقاً:</p>
+        <ul>
+          <li>الإعدادات: المدينة والإحداثيات، طريقة الحساب، اللغة، تفضيلات الإشعارات، تفضيلات إيقاف الوسائط، وقائمة المواقع المسموح بها إن استخدمتها.</li>
+          <li>جدول مواقيت الصلاة المخزّن مؤقتاً لليوم والغد.</li>
+          <li>سجل تشخيصي قصير (آخر 120 حدثاً) يُحذف تلقائياً بعد 7 أيام، ويبقى على جهازك، ولا يُرسل لأي جهة إلا إذا نسخته وأرسلته بنفسك طوعاً.</li>
+        </ul>
+
+        <h2>البيانات التي نجمعها</h2>
+        <p>
+          <strong>لا نجمع أي بيانات.</strong> لا نحصل على اسمك أو بريدك أو عنوانك أو سجل تصفحك أو محتوى الصفحات التي تفتحها.
+          لا تحتوي الإضافة على أي أدوات تتبع أو بكسلات قياس أو أكواد إعلانات.
+        </p>
+
+        <h2>الصلاحيات واستخداماتها</h2>
+        <table>
+          <thead>
+            <tr><th>الصلاحية</th><th>السبب</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="tag req">أساسية</span><code>alarms</code></td><td>إيقاظ الإضافة في وقت كل صلاة لإرسال التنبيه.</td></tr>
+            <tr><td><span class="tag req">أساسية</span><code>notifications</code></td><td>عرض إشعار النظام عند دخول وقت الصلاة.</td></tr>
+            <tr><td><span class="tag req">أساسية</span><code>storage</code></td><td>حفظ الإعدادات والجدول محلياً على جهازك (غير متزامن مع أي حساب).</td></tr>
+            <tr><td><span class="tag req">أساسية</span><code>offscreen</code></td><td>تشغيل نغمة الأذان المضمّنة داخل الإضافة من صفحة خفية (المتصفح يمنع تشغيل الصوت من الخلفية مباشرة).</td></tr>
+            <tr><td><span class="tag opt">اختيارية</span><code>scripting</code> + الوصول للمواقع</td><td>ميزة إيقاف الوسائط عند الأذان. لا تُطلب إلا إذا فعّلت الميزة بنفسك من الإعدادات أو شاشة الترحيب. انظر القسم أدناه.</td></tr>
+            <tr><td><span class="tag opt">اختيارية</span><code>geolocation</code></td><td>تُطلب فقط عند الضغط على زر «تحديد موقعي». تُحفظ الإحداثيات في الإعدادات على جهازك ولا تُرسل لأي جهة.</td></tr>
+            <tr><td><span class="tag opt">اختيارية</span><code>https://ipwho.is/*</code></td><td>تُطلب فقط عند الضغط على زر «موقع تقريبي عبر IP». انظر قسم الخدمات الخارجية.</td></tr>
+          </tbody>
+        </table>
+
+        <h2>ميزة إيقاف الوسائط (اختيارية)</h2>
+        <p>
+          عند تفعيل الميزة ومنحك الوصول، تستخدم الإضافة حقناً برمجياً محلياً (مضمّناً في حزمة الإضافة نفسها) لإيقاف
+          مشغّلات الصوت والفيديو القياسية في تبويبات المتصفح عند وقت الصلاة، ويشمل ذلك العناصر المخفية داخل ظل الصفحة،
+          والضغط على زر الإيقاف الخاص بالموقع نفسه (مثل صفحة SoundCloud أو Netflix) عند الضرورة.
+          لا تحتفظ الإضافة بمحتوى الصفحات ولا ترسل أي شيء منها إلى أي خادم، ولا تقرأ سجل تصفحك.
+          عند انتهاء مدة الإيقاف أو ضغطك على زر الاستئناف، تُستأنف فقط الوسائط التي أوقفتها الإضافة هي.
+        </p>
+
+        <h2>الخدمات الخارجية</h2>
+        <p>
+          <strong>ipwho.is</strong> — الخدمة الخارجية الوحيدة، وهي اختيارية تماماً: تُستخدم فقط عندما تضغط بنفسك على زر
+          «موقع تقريبي عبر IP». في تلك الحالة يُرسَل عنوان IP الخاص بك إلى الخدمة لتقدير مدينتك ومنطقتك الزمنية،
+          وتُحفَظ الإحداثيات الناتجة واسم المكان محلياً فقط. لا نرسل أي بيانات أخرى، ولا يحدث هذا الطلب إطلاقاً
+          إلا بضغطة زر صريحة منك. سياسة خصوصية الخدمة: <a href="https://ipwho.is" rel="noopener noreferrer" target="_blank">ipwho.is</a>.
+        </p>
+
+        <h2>مشاركة البيانات وبيعها</h2>
+        <p>
+          لا نبيع بياناتك ولا نشاركها ولا نؤجّرها لأي جهة — لأنه لا توجد بيانات لدينا أصلاً.
+          الإضافة لا تتصل بأي خادم تابع لنا لأنه لا توجد خوادم تابعة لنا.
+        </p>
+
+        <h2>مدة الاحتفاظ بالبيانات وحذفها</h2>
+        <ul>
+          <li>كل البيانات محلية على جهازك وتُحذف نهائياً بمجرد إزالة الإضافة من المتصفح.</li>
+          <li>السجل التشخيصي يُحذف تلقائياً بعد 7 أيام، ويمكنك مسحه يدوياً في أي وقت من صفحة الإعدادات.</li>
+          <li>يمكنك سحب الصلاحيات الاختيارية في أي وقت من <code>chrome://extensions</code> دون التأثير على بقية الميزات.</li>
+        </ul>
+
+        <h2>الأمان</h2>
+        <p>
+          الإضافة مبنية على Manifest V3 وتعمل ضمن سياسة أمان صارمة تسمح بتنفيذ أكواد الإضافة المضمّنة فقط،
+          ولا تحتوي على أي كود يُحمَّل من الإنترنت، ولا تطلب إلا الحد الأدنى من الصلاحيات اللازمة لكل ميزة.
+        </p>
+
+        <h2>إقرارات متجر كروم الإلكتروني</h2>
+        <p>
+          وفق تصنيفات متجر كروم الإلكتروني لإفصاحات البيانات، فإن Tcalm لا تجمع أي فئة من فئات البيانات التالية:
+          معلومات التعريف الشخصية، البيانات المالية وسجلات الشراء، البيانات الصحية واللياقية، الرسائل،
+          الصور والفيديو، الملفات الصوتية، سجل التصفح، بيانات الموقع الجغرافي (تُستخدم الإحداثيات محلياً فقط ولا تُرسل)،
+          سجل التطبيقات والأنشطة، أي محتوى آخر أنشأه المستخدم.
+        </p>
+
+        <h2>التغييرات على هذه السياسة</h2>
+        <p>
+          إذا طرأت تغييرات جوهرية على هذه السياسة فسنحدّث تاريخ «آخر تحديث» أعلاه، وننشر النسخة الجديدة على هذه الصفحة نفسها.
+        </p>
+
+        <h2>التواصل</h2>
+        <p>
+          المطوّر: محمد نسيم.<br />
+          لأي سؤال عن الخصوصية: <!-- ✏️ ضع بريدك هنا قبل النشر --> <a href="Mo2nessem@gmail.com">hello@example.com</a><br />
+          مستودع المشروع: <!-- ✏️ ضع رابط مستودعك هنا قبل النشر --> <a href="https://github.com/Monessem/Pray-calm" rel="noopener noreferrer" target="_blank">github.com/your-username/tcalm</a>
+        </p>
+      </section>
+
+      <!-- ══════════════════════ ENGLISH ══════════════════════ -->
+      <section id="lang-en" lang="en" dir="ltr" hidden>
+        <h1>Privacy Policy</h1>
+        <p class="updated">Last updated: 13 October 2026 — applies to Tcalm 1.1.28 and later for Chrome and Chromium-based browsers (Edge, Opera, Brave, and others).</p>
+
+        <div class="card tldr">
+          <p>Tcalm does not collect, transmit, or sell any personal data. All calculations and settings stay on your device inside your browser, and the extension works offline.</p>
+        </div>
+
+        <h2>Overview</h2>
+        <p>
+          Tcalm is a free browser extension that shows Islamic prayer times on your device, reminds you with
+          notifications when a prayer time enters, and can — optionally — pause playing media in browser tabs at
+          prayer time. There is no user account, no analytics, no advertising, and no developer server that your
+          data would be sent to.
+        </p>
+
+        <h2>Data stored on your device only</h2>
+        <p>The following data lives in the extension's local storage inside your browser (<code>chrome.storage.local</code>) and never leaves your device:</p>
+        <ul>
+          <li>Settings: city and coordinates, calculation method, language, notification preferences, media-pause preferences, and your allowed-sites list if you use one.</li>
+          <li>A cached prayer-time schedule for today and tomorrow.</li>
+          <li>A short diagnostics log (last 120 events) that is automatically deleted after 7 days, stays on your device, and is only shared if you personally copy and send it.</li>
+        </ul>
+
+        <h2>Data we collect</h2>
+        <p>
+          <strong>We collect nothing.</strong> We do not receive your name, email, address, browsing history, or the
+          content of pages you visit. The extension contains no trackers, measurement pixels, or advertising code.
+        </p>
+
+        <h2>Permissions and why they are used</h2>
+        <table>
+          <thead>
+            <tr><th>Permission</th><th>Purpose</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="tag req">Required</span><code>alarms</code></td><td>Wake the extension at each prayer time to deliver the alert.</td></tr>
+            <tr><td><span class="tag req">Required</span><code>notifications</code></td><td>Show the system notification when a prayer time enters.</td></tr>
+            <tr><td><span class="tag req">Required</span><code>storage</code></td><td>Save settings and the schedule locally on your device (never synced to any account).</td></tr>
+            <tr><td><span class="tag req">Required</span><code>offscreen</code></td><td>Play the bundled adhan chime from a hidden page (the browser blocks direct audio from background workers).</td></tr>
+            <tr><td><span class="tag opt">Optional</span><code>scripting</code> + site access</td><td>The media-pause feature. Only requested if you enable the feature yourself from Settings or the welcome page. See the section below.</td></tr>
+            <tr><td><span class="tag opt">Optional</span><code>geolocation</code></td><td>Only requested when you click "Detect my location". Coordinates are saved into local settings and never sent anywhere.</td></tr>
+            <tr><td><span class="tag opt">Optional</span><code>https://ipwho.is/*</code></td><td>Only requested when you click "Approximate location via IP". See third-party services.</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Media pause (optional)</h2>
+        <p>
+          When the feature is enabled and you grant site access, the extension uses a local, bundled code injection
+          to pause standard HTML5 audio and video players in browser tabs at prayer time — including elements hidden
+          inside open shadow roots — and, when necessary, presses the site's own visible pause control (for example
+          on SoundCloud or Netflix pages). The extension does not retain page content, does not send anything from
+          the page to any server, and does not read your browsing history. When the pause duration ends or you press
+          Resume, only media that Tcalm itself paused is restored.
+        </p>
+
+        <h2>Third-party services</h2>
+        <p>
+          <strong>ipwho.is</strong> — the only external service, and it is fully optional: it is used only when you
+          personally press the "Approximate location via IP" button. In that case your IP address is sent to the
+          service to estimate your city and timezone, and the resulting coordinates and place name are stored
+          locally only. Nothing else is sent, and no such request ever happens without your explicit button press.
+          Service privacy policy: <a href="https://ipwho.is" rel="noopener noreferrer" target="_blank">ipwho.is</a>.
+        </p>
+
+        <h2>Data sharing and sale</h2>
+        <p>
+          We do not sell, share, or rent your data to anyone — because we do not have any. The extension does not
+          connect to any developer server because none exists.
+        </p>
+
+        <h2>Retention and deletion</h2>
+        <ul>
+          <li>All data is local to your device and is permanently deleted when you remove the extension.</li>
+          <li>The diagnostics log is auto-deleted after 7 days and can be cleared manually anytime in Settings.</li>
+          <li>Optional permissions can be revoked anytime from <code>chrome://extensions</code> without affecting the rest of the extension.</li>
+        </ul>
+
+        <h2>Security</h2>
+        <p>
+          The extension is built on Manifest V3 and runs under a strict content security policy that only permits
+          code bundled inside the package. It contains no remotely hosted code and requests the minimum set of
+          permissions needed for each feature.
+        </p>
+
+        <h2>Chrome Web Store disclosures</h2>
+        <p>
+          Per the Chrome Web Store data-usage categories, Tcalm does not collect any of the following: personally
+          identifiable information, financial and payment information, health and fitness data, messages, photos and
+          videos, audio files, web browsing history, location data (coordinates are used locally and never
+          transmitted), app activity, app insights, or any other user-created content.
+        </p>
+
+        <h2>Changes to this policy</h2>
+        <p>
+          If this policy changes materially, we will update the "Last updated" date above and publish the new version
+          on this same page.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          Developer: Mohamed Naseem.<br />
+          Privacy questions: <!-- ✏️ put your email here before publishing --> <a href="mailto:Mo2nessem@gmail.com">hello@example.com</a><br />
+          Project repository: <!-- ✏️ put your repo URL here before publishing --> <a href="https://github.com/Monessem/Pray-calm" rel="noopener noreferrer" target="_blank">github.com/your-username/tcalm</a>
+        </p>
+      </section>
+
+      <footer>
+        Tcalm — Prayer times &amp; media pause · <span class="badge">v1.1.28</span> · © 2026 Mohamed Naseem
+      </footer>
+    </main>
+    <script>
+      (function () {
+        "use strict";
+        var en = document.getElementById("lang-en");
+        var ar = document.getElementById("lang-ar");
+        var btnEn = document.getElementById("btn-en");
+        var btnAr = document.getElementById("btn-ar");
+        if (!en || !ar || !btnEn || !btnAr) return;
+        function show(lang) {
+          var isAr = lang === "ar";
+          en.hidden = isAr;
+          ar.hidden = !isAr;
+          document.documentElement.lang = isAr ? "ar" : "en";
+          document.documentElement.dir = isAr ? "rtl" : "ltr";
+          btnAr.setAttribute("aria-pressed", String(isAr));
+          btnEn.setAttribute("aria-pressed", String(!isAr));
+        }
+        btnAr.addEventListener("click", function (e) { e.preventDefault(); show("ar"); });
+        btnEn.addEventListener("click", function (e) { e.preventDefault(); show("en"); });
+        show(/^ar\b/i.test(navigator.language || "") ? "ar" : "en");
+      })();
+    </script>
+  </body>
+</html>
