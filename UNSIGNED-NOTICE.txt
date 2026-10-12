@@ -1,0 +1,39 @@
+Tcalm for Firefox — UNSIGNED PACKAGE NOTICE
+===========================================
+
+The file `tcalm-v1.1.26.xpi` in this directory is a structurally
+valid Firefox extension package (Manifest V3, manifest.json at the ZIP root)
+that has NOT been signed by Mozilla.
+
+What this means
+---------------
+- Firefox Release/Beta will REFUSE to install it ("This add-on could not be
+  verified").
+- It installs fine via:
+  * about:debugging#/runtime/this-firefox -> "Load Temporary Add-on..."
+    (until the browser closes), or
+  * Firefox Developer Edition / Nightly / ESR with the preference
+    xpinstall.signatures.required set to false, or
+  * Enterprise policy deployments.
+
+How to get a signed, release-installable XPI
+--------------------------------------------
+1. Create an account and a new listing at https://addons.mozilla.org/developers/
+2. Submit tcalm-v1.1.26.xpi for review.
+   (If reviewers request source, provide tcalm-v1.1.26-source.zip.)
+3. After approval, download the signed XPI from the AMO developer hub, or sign
+   yourself from the command line:
+
+   npx web-ext sign --source-dir dist \
+     --api-key <AMO_JWT_ISSUER> --api-secret <AMO_JWT_SECRET>
+
+   API keys are generated at https://addons.mozilla.org/developers/addon/api/key/
+
+No signature is forged or bundled in this repository. See README.md
+("Signing & AMO submission") for the full walkthrough.
+
+Contents of this directory
+--------------------------
+- tcalm-v1.1.26.xpi        the extension package (UNSIGNED)
+- tcalm-v1.1.26-source.zip complete buildable source for review
+- UNSIGNED-NOTICE.txt                this file
