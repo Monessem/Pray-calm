@@ -16,7 +16,7 @@ English | [العربية](#العربية)
 > **[INSTALL.md](INSTALL.md)**.
 
 A Firefox-native re-imagining of [Tcalm](https://github.com/abod8639/Tcalm),
-Abdelrahman's lightweight Linux/macOS prayer-time daemon. Where the original
+abod8639 lightweight Linux/macOS prayer-time daemon. Where the original
 runs as a Python daemon that talks to MPRIS, `playerctl`, and AppleScript to
 pause your desktop media, this extension brings the same idea to the browser:
 **prayer times computed locally, notifications at prayer time, and supported
